@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Cloud Monitoring Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Professional monitoring dashboard favicon -->
+    <link rel="icon" type="image/png" href="/static/icons8-layers-16.png">
+    <style>
+        :root {
+            --neon-cyan: #00d4ff;
+            --neon-purple: #b347d9;
+            --neon-green: #39ff14;
+            --cyber-pink: #ff2a6d;
+            --electric-blue: #0066ff;
+            --neon-orange: #ff6b00;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg-strong: rgba(255, 255, 255, 0.1);
+            --glass-bg-subtle: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border-glow: rgba(0, 212, 255, 0.3);
+            --gradient-primary: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--cyber-pink) 0%, var(--electric-blue) 100%);
+            --gradient-matrix: linear-gradient(180deg, var(--neon-green) 0%, transparent 100%);
+            --code-bg: rgba(0, 0, 0, 0.3);
+            --code-border: rgba(0, 212, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -1;
+        }
+
+        .floating-gradients {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .gradient-orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .gradient-orb:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            top: 60%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        .gradient-orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(0, 212, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 212, 255, 0.02) 50%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(179, 71, 217, 0.02) 50%, transparent 51%);
+            background-size: 30px 30px;
+            animation: grid-move 12s linear infinite;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.2);
+            border-color: var(--glass-border-glow);
+        }
+
+        .header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .nav-section {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 12px 24px;
+            background: var(--glass-bg-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .nav-link:hover {
+            background: var(--glass-bg);
+            color: var(--neon-cyan);
+            border-color: var(--glass-border-glow);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .docs-content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .section-card {
+            padding: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            animation: pulse-neon 2s ease-in-out infinite;
+        }
+
+        .endpoint-card {
+            background: var(--glass-bg-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .method-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background: linear-gradient(135deg, var(--neon-green) 0%, transparent 100%);
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+        }
+
+        .method-post {
+            background: linear-gradient(135deg, var(--neon-orange) 0%, transparent 100%);
+            color: var(--neon-orange);
+            border: 1px solid var(--neon-orange);
+        }
+
+        .method-ws {
+            background: linear-gradient(135deg, var(--neon-purple) 0%, transparent 100%);
+            color: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+        }
+
+        .endpoint-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--neon-cyan);
+            background: var(--code-bg);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--code-border);
+        }
+
+        .endpoint-desc {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'JSON';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: var(--neon-green);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: var(--glass-bg-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .feature-item h4 {
+            color: var(--neon-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 15px;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .status-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .status-item {
+            background: var(--glass-bg-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+        }
+
+        .status-item:hover {
+            background: var(--glass-bg);
+            border-color: var(--glass-border-glow);
+            transform: translateY(-2px);
+        }
+
+        .status-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+
+        .status-value.error {
+            color: var(--cyber-pink);
+        }
+
+        /* Animations */
+        @keyframes hologram-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.3); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        @keyframes pulse-neon {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px currentColor);
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 15px currentColor);
+            }
+        }
+
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .back-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-gradients">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="/" class="back-btn">← Back to Home</a>
+
+    <!-- Header -->
+    <header class="header">
+                        <h1 class="logo">API Documentation</h1>
+        <p class="subtitle">Complete API Reference for Cloud Monitoring Dashboard</p>
+        
+        <nav class="nav-section">
+            <a href="#status" class="nav-link">🔧 Status</a>
+            <a href="#architecture" class="nav-link">🏗️ Architecture</a>
+            <a href="#endpoints" class="nav-link">🔗 API Reference</a>
+            <a href="#websocket" class="nav-link">🔌 WebSocket</a>
+            <a href="/static/index.html" class="nav-link">🚀 Dashboard</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="docs-content">
+            <!-- API Status -->
+            <section class="section-card glass-card" id="status">
+                <h2 class="section-title">
+                    <span class="section-icon">🔧</span>
+                    System Status
+                </h2>
+                <div class="status-indicators">
+                    <div class="status-item">
+                        <div class="status-label">Backend API</div>
+                        <div class="status-value" id="api-status">
+                            ✅ ONLINE
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">WebSocket</div>
+                        <div class="status-value" id="ws-status">
+                            🔌 ACTIVE
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Ollama AI</div>
+                        <div class="status-value" id="ai-status">
+                            🤖 ACTIVE
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Dashboard</div>
+                        <div class="status-value" id="dashboard-status">
+                            🚀 READY
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Architecture -->
+            <section class="section-card glass-card" id="architecture">
+                <h2 class="section-title">
+                    <span class="section-icon">🏗️</span>
+                    System Architecture
+                </h2>
+                
+                <div style="background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 2rem; margin: 2rem 0; text-align: center;">
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #00d4ff; line-height: 2;">
+                        <div style="margin-bottom: 2rem;">
+                            <div style="color: #39ff14; font-size: 1.2rem; margin-bottom: 1rem;">🌐 CLIENT (Browser)</div>
+                            <div style="color: rgba(255, 255, 255, 0.8);">HTML5 + CSS3 + JavaScript ES6+ + Chart.js</div>
+                        </div>
+                        
+                        <div style="color: #ff2a6d; margin: 1rem 0;">▼ WebSocket + HTTP Requests ▼</div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <div style="color: #b347d9; font-size: 1.2rem; margin-bottom: 1rem;">⚡ BACKEND API</div>
+                            <div style="color: rgba(255, 255, 255, 0.8);">FastAPI + Uvicorn + WebSocket + Jinja2</div>
+                        </div>
+                        
+                        <div style="color: #ff2a6d; margin: 1rem 0;">▼ HTTP Requests ▼</div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <div style="color: #ff6b00; font-size: 1.2rem; margin-bottom: 1rem;">🤖 AI ENGINE</div>
+                            <div style="color: rgba(255, 255, 255, 0.8);">Ollama + Mistral 7B Model</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div class="status-item">
+                        <div class="status-label">🔄 Real-time Communication</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            WebSocket for live metrics, HTTP for API calls
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">📊 Data Flow</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            Metrics → Charts → AI Analysis → Insights
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">🔒 Security</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            CORS enabled, Input validation, Error handling
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Endpoints -->
+            <section class="section-card glass-card" id="endpoints">
+                <h2 class="section-title">
+                    <span class="section-icon">🔗</span>
+                    Complete API Reference
+                </h2>
+
+                <!-- Health Check -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-get">GET</span>
+                        <code class="endpoint-path">/api/health</code>
+                    </div>
+                    <p class="endpoint-desc">Check the health status of the API and Ollama AI service</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "status": "operational",
+  "timestamp": "2025-01-01T12:00:00.000000",
+  "ollama_status": "operational",
+  "simulator_running": true,
+  "active_incidents": 0,
+  "active_connections": 2,
+  "ai_status": "mandatory",
+  "model": "mistral:7b"
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-get">GET</span>
+                        <code class="endpoint-path">/api/metrics</code>
+                    </div>
+                    <p class="endpoint-desc">Get current system metrics including CPU, memory, API latency, and error rates</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "cpu_usage": 23.5,
+  "memory_usage": 67.2,
+  "api_latency": 45.3,
+  "error_rate": 0.02,
+  "timestamp": "2025-01-01T12:00:00.000000",
+  "active_incidents": ["cpu_spike"],
+  "ai_status": "mandatory_active"
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Incidents -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-get">GET</span>
+                        <code class="endpoint-path">/api/incidents</code>
+                    </div>
+                    <p class="endpoint-desc">List all available incident types and their current status</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "incidents": [
+    {
+      "id": "cpu_spike",
+      "name": "CPU Spike",
+      "emoji": "🔥",
+      "description": "Critical CPU consumption spike",
+      "severity": "CRITICAL",
+      "active": false
+    },
+    {
+      "id": "memory_leak",
+      "name": "Memory Leak", 
+      "emoji": "💾",
+      "description": "Progressive memory leak",
+      "severity": "HIGH",
+      "active": true
+    }
+  ],
+  "active_count": 1
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Trigger Incident -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-post">POST</span>
+                        <code class="endpoint-path">/api/incidents/trigger</code>
+                    </div>
+                    <p class="endpoint-desc">Trigger a single incident for testing monitoring capabilities</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #ff6b00; margin-bottom: 1rem;">📤 Request Body:</div>
+                        <pre style="margin: 0; color: var(--neon-green); margin-bottom: 1rem;">{
+  "incident_id": "cpu_spike"
+}</pre>
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "message": "CPU Spike incident triggered successfully", 
+  "incident_id": "cpu_spike",
+  "duration": 45,
+  "timestamp": "2025-01-01T12:00:00.000000",
+  "ai_analysis_triggered": true
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Multiple Incidents -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-post">POST</span>
+                        <code class="endpoint-path">/api/incidents/trigger-multiple</code>
+                    </div>
+                    <p class="endpoint-desc">Trigger multiple simultaneous incidents for comprehensive testing</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #ff6b00; margin-bottom: 1rem;">📤 Request Body:</div>
+                        <pre style="margin: 0; color: var(--neon-green); margin-bottom: 1rem;">{
+  "incident_ids": ["cpu_spike", "memory_leak", "api_failure"]
+}</pre>
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "message": "3 simultaneous incidents triggered successfully",
+  "triggered_incidents": [
+    {
+      "id": "cpu_spike",
+      "name": "CPU Spike",
+      "duration": 45
+    },
+    {
+      "id": "memory_leak", 
+      "name": "Memory Leak",
+      "duration": 67
+    },
+    {
+      "id": "api_failure",
+      "name": "API Failure", 
+      "duration": 23
+    }
+  ],
+  "timestamp": "2025-01-01T12:00:00.000000",
+  "ai_analysis_triggered": true
+}</pre>
+                    </div>
+                </div>
+
+                <!-- AI Analysis -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-get">GET</span>
+                        <code class="endpoint-path">/api/ai/analyze</code>
+                    </div>
+                    <p class="endpoint-desc">Request manual AI analysis using Ollama + Mistral 7B for intelligent system insights</p>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "analysis": "🔍 SYSTEM ANALYSIS COMPLETE\n\n✅ Current Status: STABLE with minor concerns\n\n📊 Metrics Analysis:\n• CPU Usage: 23.5% - Normal operational range\n• Memory Usage: 67.2% - Approaching high utilization\n• API Latency: 45.3ms - Excellent response times\n• Error Rate: 0.02% - Minimal errors detected\n\n⚠️ Recommendations:\n1. Monitor memory usage trends\n2. Consider memory optimization\n3. Maintain current CPU efficiency\n\n🎯 Overall Health Score: 85/100",
+  "timestamp": "2025-01-01T12:00:00.000000",
+  "model": "mistral:7b",
+  "analysis_duration": "2.3s"
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WebSocket Section -->
+            <section class="section-card glass-card" id="websocket">
+                <h2 class="section-title">
+                    <span class="section-icon">🔌</span>
+                    WebSocket Real-time Communication
+                </h2>
+
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge method-ws">WS</span>
+                        <code class="endpoint-path">ws://localhost:8000/ws</code>
+                    </div>
+                    <p class="endpoint-desc">Bidirectional real-time communication for live metrics streaming and system updates</p>
+                    
+                    <h4 style="color: var(--neon-cyan); margin: 1.5rem 0 1rem 0;">🔗 Connection Establishment</h4>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <pre style="margin: 0; color: var(--neon-green);">// JavaScript WebSocket Connection
+const socket = new WebSocket('ws://localhost:8000/ws');
+
+socket.onopen = function(event) {
+    console.log('🚀 WebSocket connected to monitoring system');
+};
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('📊 Real-time data received:', data);
+    updateDashboard(data);
+};
+
+socket.onerror = function(error) {
+    console.error('❌ WebSocket error:', error);
+};
+
+socket.onclose = function(event) {
+    console.log('🔌 WebSocket connection closed');
+};</pre>
+                    </div>
+
+                    <h4 style="color: var(--neon-purple); margin: 1.5rem 0 1rem 0;">📡 Message Types</h4>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <div style="color: #39ff14; margin-bottom: 1rem;">🔄 Metrics Update (Every 2 seconds):</div>
+                        <pre style="margin: 0; color: var(--neon-cyan); margin-bottom: 1.5rem;">{
+  "type": "metrics_update",
+  "data": {
+    "cpu_usage": 45.2,
+    "memory_usage": 73.8,
+    "api_latency": 67.5,
+    "error_rate": 0.01,
+    "timestamp": "2025-01-01T12:00:00.000000",
+    "active_incidents": ["memory_leak"]
+  }
+}</pre>
+
+                        <div style="color: #ff2a6d; margin-bottom: 1rem;">🚨 Incident Alert:</div>
+                        <pre style="margin: 0; color: var(--neon-cyan); margin-bottom: 1.5rem;">{
+  "type": "incident_alert",
+  "data": {
+    "incident_id": "cpu_spike",
+    "name": "CPU Spike",
+    "severity": "CRITICAL",
+    "status": "triggered",
+    "timestamp": "2025-01-01T12:00:00.000000"
+  }
+}</pre>
+
+                        <div style="color: #ff6b00; margin-bottom: 1rem;">🤖 AI Analysis Complete:</div>
+                        <pre style="margin: 0; color: var(--neon-cyan);">{
+  "type": "ai_analysis",
+  "data": {
+    "analysis": "System analysis complete...",
+    "timestamp": "2025-01-01T12:00:00.000000",
+    "model": "mistral:7b"
+  }
+}</pre>
+                    </div>
+
+                    <h4 style="color: var(--neon-orange); margin: 1.5rem 0 1rem 0;">⚡ Client Commands</h4>
+                    <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+                        <pre style="margin: 0; color: var(--neon-green);">// Send ping to keep connection alive
+socket.send(JSON.stringify({
+  "type": "ping",
+  "timestamp": new Date().toISOString()
+}));
+
+// Request immediate metrics update
+socket.send(JSON.stringify({
+  "type": "request_metrics"
+}));
+
+// Subscribe to specific incident alerts
+socket.send(JSON.stringify({
+  "type": "subscribe",
+  "filters": ["cpu_spike", "memory_leak"]
+}));</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint-card">
+                    <h3 style="color: var(--neon-cyan); margin-bottom: 1rem;">🚀 Quick Start</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem;">
+                        Experience the full interactive dashboard with real-time WebSocket monitoring:
+                    </p>
+                    <div style="text-align: center;">
+                        <a href="/static/index.html" style="
+                            display: inline-block;
+                            padding: 15px 30px;
+                            background: var(--gradient-primary);
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 10px;
+                            font-weight: 700;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+                        ">🚀 Launch Interactive Dashboard</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="section-card glass-card">
+                <h2 class="section-title">
+                    <span class="section-icon">⚡</span>
+                    Key Features
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div class="status-item">
+                        <div class="status-label">🚀 Real-time Monitoring</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            Live CPU, memory, API latency tracking
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">🤖 AI Analysis</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            Mandatory Ollama + Mistral 7B integration
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">🔥 Incident Simulation</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            Multiple simultaneous incident types
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">🎨 Modern UI</div>
+                        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                            Glassmorphism with cyberpunk aesthetics
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html> 

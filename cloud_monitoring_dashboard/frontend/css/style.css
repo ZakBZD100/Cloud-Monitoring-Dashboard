@@ -1,0 +1,430 @@
+/* ===============================================================================
+   🚀 CLOUD MONITORING DASHBOARD - STYLES GLASSMORPHISME
+   Auteur: Zakariae El Bouzidi
+   LinkedIn: https://www.linkedin.com/in/zakariae-elbouzidi/
+   GitHub: https://github.com/ZakBZD100
+   =============================================================================== */
+
+/* Variables CSS Globales */
+:root {
+    /* Palette Couleurs */
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-critical: #ef4444;
+    --color-ai: #8b5cf6;
+    --color-neutral: #ffffff;
+    --color-info: #3b82f6;
+    --color-secondary: #6b7280;
+    
+    /* Glassmorphisme */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --glass-blur: blur(10px);
+    
+    /* Dégradés */
+    --gradient-bg: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    
+    /* Typographie */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease-out;
+    --transition-normal: 0.3s ease-out;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--gradient-bg);
+    min-height: 100vh;
+    color: var(--color-neutral);
+    line-height: 1.6;
+}
+
+/* ===============================================================================
+   HEADER
+   =============================================================================== */
+
+.dashboard-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    background: linear-gradient(135deg, var(--color-neutral) 0%, var(--color-info) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.connection-status, .system-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--glass-bg);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transition: var(--transition-normal);
+}
+
+.status-indicator.offline { background: var(--color-secondary); }
+.status-indicator.connecting { 
+    background: var(--color-warning);
+    animation: pulse 2s infinite;
+}
+.status-indicator.online { background: var(--color-success); }
+
+.status-value.normal { color: var(--color-success); }
+.status-value.warning { color: var(--color-warning); }
+.status-value.critical { color: var(--color-critical); }
+
+/* ===============================================================================
+   CONTAINER PRINCIPAL
+   =============================================================================== */
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.glass-card {
+    background: var(--gradient-card);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: var(--spacing-xl);
+    transition: var(--transition-normal);
+}
+
+.glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-neutral);
+}
+
+/* ===============================================================================
+   INCIDENTS
+   =============================================================================== */
+
+.incidents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.incident-card {
+    background: var(--glass-bg);
+    border-radius: 16px;
+    border: 2px solid transparent;
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    position: relative;
+}
+
+.incident-card:hover {
+    transform: scale(1.02);
+    border-color: var(--color-info);
+}
+
+.incident-card.selected {
+    border-color: var(--color-success);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, var(--glass-bg) 100%);
+}
+
+.incident-card.active {
+    border-color: var(--color-critical);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, var(--glass-bg) 100%);
+    animation: pulse-critical 2s infinite;
+}
+
+.incident-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.incident-emoji {
+    font-size: 2.25rem;
+}
+
+.incident-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.incident-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.incident-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.incident-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.incident-counter {
+    color: var(--color-info);
+    font-weight: 600;
+}
+
+/* ===============================================================================
+   MÉTRIQUES
+   =============================================================================== */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.metric-card {
+    text-align: center;
+    position: relative;
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.metric-icon {
+    font-size: 1.25rem;
+}
+
+.metric-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.metric-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.metric-status {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: var(--spacing-md);
+}
+
+.metric-status.normal {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--color-success);
+}
+
+.metric-status.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-warning);
+}
+
+.metric-status.critical {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--color-critical);
+    animation: pulse-critical 2s infinite;
+}
+
+.metric-progress {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-success) 0%, var(--color-info) 100%);
+    transition: width var(--transition-normal);
+    border-radius: 4px;
+}
+
+.metric-trend {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.last-update {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+/* ===============================================================================
+   ANIMATIONS
+   =============================================================================== */
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes pulse-critical {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+}
+
+/* ===============================================================================
+   RESPONSIVE
+   =============================================================================== */
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: var(--spacing-md);
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .incidents-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: var(--transition-normal);
+}
+
+.btn-launch-simultaneous {
+    background: linear-gradient(135deg, var(--color-success) 0%, var(--color-info) 100%);
+    color: white;
+    font-size: 1.125rem;
+    padding: var(--spacing-lg) var(--spacing-2xl);
+    min-width: 200px;
+}
+
+.btn-launch-simultaneous:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+.btn-launch-simultaneous:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-select-all, .btn-select-none {
+    background: var(--glass-bg);
+    color: var(--color-neutral);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-select-all:hover, .btn-select-none:hover {
+    background: var(--color-info);
+    border-color: var(--color-info);
+} 

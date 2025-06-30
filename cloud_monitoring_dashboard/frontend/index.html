@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Monitoring Dashboard - Real-time Infrastructure Monitoring</title>
+    <meta name="description" content="Professional cloud monitoring dashboard with real-time metrics and AI analysis. Built by Zakariae Elbouzidi.">
+    <meta name="author" content="Zakariae Elbouzidi">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/additional.css">
+    <link rel="stylesheet" href="/static/css/enhanced_styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Professional monitoring dashboard favicon -->
+    <link rel="icon" type="image/png" href="/static/icons8-layers-16.png">
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="dashboard-title">
+                    Cloud Infrastructure Monitor
+                </h1>
+                <div class="header-subtitle">
+                    Real-time infrastructure monitoring with AI analysis | Built by Zakariae Elbouzidi
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-nav">
+                    <a href="/" class="nav-button">Homepage</a>
+                    <a href="/docs" class="nav-button">API Docs</a>
+                </div>
+                <div class="connection-status" id="connectionStatus">
+                    <div class="status-indicator offline" id="statusIndicator"></div>
+                    <span id="statusText">Connecting...</span>
+                </div>
+                <div class="system-status" id="systemStatus">
+                    <span class="status-label">System:</span>
+                    <span class="status-value normal" id="systemStatusValue">NORMAL</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container Principal -->
+    <main class="dashboard-container">
+        
+        <!-- Simultaneous Incidents Trigger Section -->
+        <section class="incidents-section glass-card">
+            <div class="section-header">
+                <h2 class="section-title">Incident Simulation Center</h2>
+                <div class="incident-counter">
+                    <span id="selectedCount">0</span> incident(s) selected for simultaneous execution
+                </div>
+            </div>
+            
+            <div class="incidents-grid" id="incidentsGrid">
+                <!-- Incidents will be dynamically generated -->
+            </div>
+            
+            <div class="incident-actions">
+                <button class="btn-select-all" id="btnSelectAll">Select All</button>
+                <button class="btn-select-none" id="btnSelectNone">Deselect</button>
+                <button class="btn-launch-simultaneous" id="btnLaunchSimultaneous" disabled>
+                    Launch Simultaneous Incidents
+                </button>
+            </div>
+        </section>
+
+        <!-- Real-Time Metrics Section -->
+        <section class="metrics-section">
+            <div class="section-header">
+                <h2 class="section-title">Real-Time System Metrics</h2>
+                <div class="last-update">
+                    Last update: <span id="lastUpdate">--:--:--</span>
+                </div>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card glass-card" id="cpuCard">
+                    <div class="metric-header">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-title">CPU USAGE</div>
+                    </div>
+                    <div class="metric-value" id="cpuValue">0%</div>
+                    <div class="metric-status normal" id="cpuStatus">NORMAL</div>
+                    <div class="metric-progress">
+                        <div class="progress-bar" id="cpuProgress"></div>
+                    </div>
+                    <div class="metric-trend" id="cpuTrend">Trend: Stable</div>
+                </div>
+
+                <div class="metric-card glass-card" id="memoryCard">
+                    <div class="metric-header">
+                        <div class="metric-icon">💾</div>
+                        <div class="metric-title">MEMORY</div>
+                    </div>
+                    <div class="metric-value" id="memoryValue">0%</div>
+                    <div class="metric-status normal" id="memoryStatus">NORMAL</div>
+                    <div class="metric-progress">
+                        <div class="progress-bar" id="memoryProgress"></div>
+                    </div>
+                    <div class="metric-trend" id="memoryTrend">Trend: Stable</div>
+                </div>
+
+                <div class="metric-card glass-card" id="latencyCard">
+                    <div class="metric-header">
+                        <div class="metric-icon">⚡</div>
+                        <div class="metric-title">LATENCY</div>
+                    </div>
+                    <div class="metric-value" id="latencyValue">0ms</div>
+                    <div class="metric-status normal" id="latencyStatus">FAST</div>
+                    <div class="metric-progress">
+                        <div class="progress-bar" id="latencyProgress"></div>
+                    </div>
+                    <div class="metric-trend" id="latencyTrend">Trend: Stable</div>
+                </div>
+
+                <div class="metric-card glass-card" id="errorCard">
+                    <div class="metric-header">
+                        <div class="metric-icon">🚨</div>
+                        <div class="metric-title">ERROR RATE</div>
+                    </div>
+                    <div class="metric-value" id="errorValue">0%</div>
+                    <div class="metric-status normal" id="errorStatus">EXCELLENT</div>
+                    <div class="metric-progress">
+                        <div class="progress-bar" id="errorProgress"></div>
+                    </div>
+                    <div class="metric-trend" id="errorTrend">Trend: Stable</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts & AI Section -->
+        <section class="charts-ai-section">
+            
+            <!-- Historical Charts -->
+            <div class="charts-container glass-card">
+                <div class="section-header">
+                    <h2 class="section-title">Historical Performance Charts</h2>
+                    <div class="chart-controls">
+                        <button class="btn-chart-control active" data-period="5m">5min</button>
+                        <button class="btn-chart-control" data-period="15m">15min</button>
+                        <button class="btn-chart-control" data-period="1h">1h</button>
+                    </div>
+                </div>
+                
+                <div class="charts-grid">
+                    <div class="chart-wrapper">
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="latencyChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="errorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ollama AI -->
+            <div class="ai-container glass-card">
+                <div class="section-header">
+                    <h2 class="section-title">AI Analysis Center</h2>
+                    <div class="ai-status" id="aiStatus">
+                        <div class="ai-indicator connecting" id="aiIndicator"></div>
+                        <span id="aiStatusText">Connecting to AI...</span>
+                    </div>
+                </div>
+                
+                <div class="ai-content" id="aiContent">
+                    <div class="ai-placeholder">
+                        <div class="ai-icon">🧠</div>
+                        <div class="ai-text">
+                            AI is ready to analyze system incidents<br>
+                            <small>Automatic analysis will trigger when multiple incidents occur simultaneously</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-actions">
+                    <button class="btn-ai-analyze" id="btnManualAnalysis">
+                        Request Manual Analysis
+                    </button>
+                    <button class="btn-ai-clear" id="btnClearAnalysis">
+                        Clear Analysis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Logs Section -->
+        <section class="logs-section glass-card">
+            <div class="section-header">
+                <h2 class="section-title">System Activity Logs</h2>
+                <div class="logs-controls">
+                    <button class="btn-clear-logs" id="btnClearLogs">Clear Logs</button>
+                </div>
+            </div>
+            
+            <div class="logs-container-wrapper">
+                <div class="logs-container" id="logsContainer">
+                    <div class="log-entry log-info">
+                        <span class="log-time">--:--:--</span>
+                        <span class="log-type">INFO</span>
+                        <span class="log-message">Dashboard initialized - Built by Zakariae Elbouzidi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>Cloud Monitoring Dashboard v2.1.0</span>
+                <span class="separator">•</span>
+                <span>Created by Zakariae Elbouzidi</span>
+            </div>
+            <div class="footer-right">
+                <a href="https://www.linkedin.com/in/zakariae-elbouzidi/" target="_blank" class="footer-link">
+                    LinkedIn
+                </a>
+                <span class="separator">•</span>
+                <a href="https://github.com/ZakBZD100" target="_blank" class="footer-link">
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html> 

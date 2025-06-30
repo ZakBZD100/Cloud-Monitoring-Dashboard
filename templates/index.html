@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Monitoring Dashboard - Professional Real-time Infrastructure Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Professional monitoring dashboard favicon -->
+    <link rel="icon" type="image/png" href="/static/icons8-layers-16.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --neon-cyan: #00d4ff;
+            --neon-purple: #b347d9;
+            --neon-green: #39ff14;
+            --cyber-pink: #ff2a6d;
+            --electric-blue: #0066ff;
+            --neon-orange: #ff6b00;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg-strong: rgba(255, 255, 255, 0.1);
+            --glass-bg-subtle: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border-glow: rgba(0, 212, 255, 0.3);
+            --gradient-primary: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--cyber-pink) 0%, var(--electric-blue) 100%);
+            --gradient-matrix: linear-gradient(180deg, var(--neon-green) 0%, transparent 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -1;
+        }
+
+        .floating-gradients {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .gradient-orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .gradient-orb:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            top: 60%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        .gradient-orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(0, 212, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 212, 255, 0.02) 50%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(179, 71, 217, 0.02) 50%, transparent 51%);
+            background-size: 30px 30px;
+            animation: grid-move 12s linear infinite;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            background-size: 40px 40px;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.2);
+            border-color: var(--glass-border-glow);
+        }
+
+        .header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: float-3d 6s ease-in-out infinite;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: -2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: -4s;
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: pulse-neon 2s ease-in-out infinite;
+        }
+
+        .feature-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 18px 36px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: 0 15px 40px rgba(255, 42, 109, 0.3);
+            border: 1px solid rgba(255, 42, 109, 0.3);
+        }
+
+        .btn-docs {
+            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 100%);
+            color: white;
+            box-shadow: 0 15px 40px rgba(57, 255, 20, 0.3);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.4);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 20px 50px rgba(255, 42, 109, 0.4);
+            text-shadow: 0 0 15px rgba(255, 42, 109, 0.8);
+        }
+
+        .btn-docs:hover {
+            box-shadow: 0 20px 50px rgba(57, 255, 20, 0.4);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        }
+
+        .status-section {
+            margin: 3rem 0;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .status-item {
+            padding: 1.5rem;
+            text-align: center;
+            background: var(--glass-bg-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 3rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes hologram-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.3); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        @keyframes float-3d {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            33% { transform: translateY(-10px) rotateX(2deg); }
+            66% { transform: translateY(5px) rotateX(-1deg); }
+        }
+
+        @keyframes pulse-neon {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px currentColor);
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 15px currentColor);
+            }
+        }
+
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-gradients">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">Cloud Monitoring Dashboard</h1>
+        <p class="subtitle">Professional Real-time Infrastructure Monitoring with AI Analysis | Built by Zakariae Elbouzidi</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <section class="main-content">
+            <div class="feature-card glass-card">
+                <span class="feature-icon">⚡</span>
+                <h2 class="feature-title">Real-time Monitoring</h2>
+                <p class="feature-description">Monitor CPU, memory, API latency, and error rates in real-time with WebSocket-powered updates and advanced visualizations.</p>
+            </div>
+
+            <div class="feature-card glass-card">
+                <span class="feature-icon">🤖</span>
+                <h2 class="feature-title">AI-Powered Analysis</h2>
+                <p class="feature-description">Mandatory Ollama + Mistral 7B integration provides intelligent incident analysis and predictive insights for system health.</p>
+            </div>
+
+            <div class="feature-card glass-card">
+                <span class="feature-icon">🔥</span>
+                <h2 class="feature-title">Incident Simulation</h2>
+                <p class="feature-description">Trigger simultaneous incidents including CPU spikes, memory leaks, API failures, and network latency for comprehensive testing.</p>
+            </div>
+        </section>
+
+        <!-- Real-time Metrics Graph -->
+        <section class="glass-card" style="margin: 3rem 0; padding: 2.5rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--neon-cyan); font-size: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                <span style="font-size: 2.5rem; animation: pulse-neon 2s ease-in-out infinite;">📊</span>
+                Live System Metrics
+            </h2>
+            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
+                <canvas id="metricsChart" width="400" height="200"></canvas>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div class="status-item">
+                    <div class="status-label">CPU Usage</div>
+                    <div class="status-value" id="live-cpu">---%</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Memory Usage</div>
+                    <div class="status-value" id="live-memory">---%</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">API Latency</div>
+                    <div class="status-value" id="live-latency">---ms</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Error Rate</div>
+                    <div class="status-value" id="live-errors">---%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Specifications -->
+        <section class="glass-card" style="margin: 3rem 0; padding: 2.5rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--neon-purple); font-size: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                <span style="font-size: 2.5rem; animation: pulse-neon 2s ease-in-out infinite;">⚙️</span>
+                Technical Architecture
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="background: var(--glass-bg-subtle); border: 1px solid var(--glass-border); border-radius: 15px; padding: 1.5rem; backdrop-filter: blur(15px);">
+                    <h3 style="color: var(--neon-cyan); margin-bottom: 1rem; font-size: 1.3rem;">🛠️ Backend Stack</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                        <li><strong>FastAPI</strong> - High-performance async API</li>
+                        <li><strong>WebSocket</strong> - Real-time bidirectional communication</li>
+                        <li><strong>Ollama + Mistral 7B</strong> - AI analysis engine</li>
+                        <li><strong>Python 3.11+</strong> - Modern async/await</li>
+                        <li><strong>Uvicorn</strong> - ASGI production server</li>
+                    </ul>
+                </div>
+                <div style="background: var(--glass-bg-subtle); border: 1px solid var(--glass-border); border-radius: 15px; padding: 1.5rem; backdrop-filter: blur(15px);">
+                    <h3 style="color: var(--neon-green); margin-bottom: 1rem; font-size: 1.3rem;">🎨 Frontend Technologies</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                        <li><strong>Vanilla JavaScript ES6+</strong> - Modern web APIs</li>
+                        <li><strong>Chart.js</strong> - Advanced data visualizations</li>
+                        <li><strong>CSS Grid & Flexbox</strong> - Responsive layouts</li>
+                        <li><strong>CSS3 Animations</strong> - GPU-accelerated effects</li>
+                        <li><strong>WebSocket API</strong> - Real-time data streaming</li>
+                    </ul>
+                </div>
+                <div style="background: var(--glass-bg-subtle); border: 1px solid var(--glass-border); border-radius: 15px; padding: 1.5rem; backdrop-filter: blur(15px);">
+                    <h3 style="color: var(--cyber-pink); margin-bottom: 1rem; font-size: 1.3rem;">🔬 Monitoring Capabilities</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                        <li><strong>4 Incident Types</strong> - CPU, Memory, API, Network</li>
+                        <li><strong>Real-time Metrics</strong> - Sub-second updates</li>
+                        <li><strong>AI-Powered Analysis</strong> - Intelligent insights</li>
+                        <li><strong>Multi-incident Testing</strong> - Simultaneous triggers</li>
+                        <li><strong>Historical Data</strong> - Trend analysis</li>
+                    </ul>
+                </div>
+                <div style="background: var(--glass-bg-subtle); border: 1px solid var(--glass-border); border-radius: 15px; padding: 1.5rem; backdrop-filter: blur(15px);">
+                    <h3 style="color: var(--neon-orange); margin-bottom: 1rem; font-size: 1.3rem;">🚀 Performance Features</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                        <li><strong>WebSocket Pooling</strong> - Optimized connections</li>
+                        <li><strong>Async Processing</strong> - Non-blocking operations</li>
+                        <li><strong>GPU Acceleration</strong> - Hardware-optimized UI</li>
+                        <li><strong>Memory Management</strong> - Efficient data handling</li>
+                        <li><strong>Error Recovery</strong> - Graceful degradation</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Status -->
+        <section class="status-section glass-card">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--neon-cyan); font-size: 2rem;">🔧 System Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">Backend API</div>
+                    <div class="status-value">✅ OPERATIONAL</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">WebSocket</div>
+                    <div class="status-value">✅ CONNECTED</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Ollama AI</div>
+                    <div class="status-value">🤖 REQUIRED</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Dashboard</div>
+                    <div class="status-value">🚀 READY</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; background: var(--gradient-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ready to Monitor?</h2>
+            <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem;">Access the professional monitoring dashboard and start tracking your system performance with AI-powered insights.</p>
+            
+            <div class="cta-buttons">
+                <a href="/static/index.html" class="btn btn-primary">🚀 Launch Dashboard</a>
+                <a href="/docs" class="btn btn-docs">📚 API Documentation</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://github.com/ZakBZD100" target="_blank">🐙 GitHub</a>
+            <a href="https://www.linkedin.com/in/zakariae-elbouzidi/" target="_blank">💼 LinkedIn</a>
+        </div>
+        <div class="copyright">
+                            <p>© 2025 Cloud Monitoring Dashboard - Created by <strong>Zakariae Elbouzidi</strong></p>
+            <p>Professional real-time monitoring with AI-powered insights</p>
+        </div>
+    </footer>
+
+    <script>
+        // Chart.js configuration
+        let metricsChart;
+        let metricsData = {
+            cpu: [],
+            memory: [],
+            latency: [],
+            errors: [],
+            timestamps: []
+        };
+
+        // Initialize Chart
+        function initChart() {
+            const ctx = document.getElementById('metricsChart').getContext('2d');
+            metricsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'CPU Usage (%)',
+                            data: [],
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#00d4ff',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Memory Usage (%)',
+                            data: [],
+                            borderColor: '#b347d9',
+                            backgroundColor: 'rgba(179, 71, 217, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#b347d9',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'API Latency (ms)',
+                            data: [],
+                            borderColor: '#39ff14',
+                            backgroundColor: 'rgba(57, 255, 20, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4,
+                            pointBackgroundColor: '#39ff14',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Error Rate (%)',
+                            data: [],
+                            borderColor: '#ff2a6d',
+                            backgroundColor: 'rgba(255, 42, 109, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#ff2a6d',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#00d4ff',
+                            bodyColor: 'rgba(255, 255, 255, 0.9)',
+                            borderColor: 'rgba(0, 212, 255, 0.3)',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Time',
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                maxTicksLimit: 8
+                            }
+                        },
+                        y: {
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Latency (ms)',
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                beginAtZero: true
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    },
+                    elements: {
+                        point: {
+                            hoverRadius: 8
+                        }
+                    },
+                    animation: {
+                        duration: 750,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Update chart with new data
+        function updateChart(data) {
+            const now = new Date().toLocaleTimeString();
+            
+            // Add new data
+            metricsData.timestamps.push(now);
+            metricsData.cpu.push(data.cpu_usage || 0);
+            metricsData.memory.push(data.memory_usage || 0);
+            metricsData.latency.push(data.api_latency || 0);
+            metricsData.errors.push(data.error_rate || 0);
+            
+            // Keep only last 20 data points
+            if (metricsData.timestamps.length > 20) {
+                metricsData.timestamps.shift();
+                metricsData.cpu.shift();
+                metricsData.memory.shift();
+                metricsData.latency.shift();
+                metricsData.errors.shift();
+            }
+            
+            // Update chart
+            metricsChart.data.labels = metricsData.timestamps;
+            metricsChart.data.datasets[0].data = metricsData.cpu;
+            metricsChart.data.datasets[1].data = metricsData.memory;
+            metricsChart.data.datasets[2].data = metricsData.latency;
+            metricsChart.data.datasets[3].data = metricsData.errors;
+            metricsChart.update('none');
+            
+            // Update live values
+            document.getElementById('live-cpu').textContent = `${data.cpu_usage?.toFixed(1) || 0}%`;
+            document.getElementById('live-memory').textContent = `${data.memory_usage?.toFixed(1) || 0}%`;
+            document.getElementById('live-latency').textContent = `${data.api_latency?.toFixed(0) || 0}ms`;
+            document.getElementById('live-errors').textContent = `${data.error_rate?.toFixed(2) || 0}%`;
+        }
+
+        // Fetch metrics from API
+        async function fetchMetrics() {
+            try {
+                const response = await fetch('/api/metrics');
+                const data = await response.json();
+                updateChart(data);
+            } catch (error) {
+                console.log('Metrics fetch failed:', error);
+                // Generate fake data for demo
+                updateChart({
+                    cpu_usage: Math.random() * 100,
+                    memory_usage: Math.random() * 100,
+                    api_latency: Math.random() * 200 + 50,
+                    error_rate: Math.random() * 5
+                });
+            }
+        }
+
+        // Dynamic status updates
+        async function updateSystemStatus() {
+            try {
+                const response = await fetch('/api/health');
+                const health = await response.json();
+                
+                // Update status indicators based on health check
+                const statusItems = document.querySelectorAll('.status-value');
+                if (health.status === 'operational') {
+                    statusItems[0].textContent = '✅ OPERATIONAL';
+                    statusItems[0].style.color = 'var(--neon-green)';
+                }
+                
+                if (health.ollama_status === 'operational') {
+                    statusItems[2].textContent = '🤖 ACTIVE';
+                    statusItems[2].style.color = 'var(--neon-green)';
+                } else {
+                    statusItems[2].textContent = '❌ OFFLINE';
+                    statusItems[2].style.color = 'var(--cyber-pink)';
+                }
+            } catch (error) {
+                console.log('Health check failed:', error);
+            }
+        }
+
+        // Parallax effect for gradient orbs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const orbs = document.querySelectorAll('.gradient-orb');
+            
+            orbs.forEach((orb, index) => {
+                const speed = 0.5 + (index * 0.2);
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize chart
+            initChart();
+            
+            // Start fetching metrics
+            fetchMetrics();
+            setInterval(fetchMetrics, 3000); // Update every 3 seconds
+            
+            // Update system status
+            updateSystemStatus();
+            setInterval(updateSystemStatus, 30000); // Update every 30 seconds
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html> 

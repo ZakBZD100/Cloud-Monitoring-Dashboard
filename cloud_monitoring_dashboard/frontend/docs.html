@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Cloud Monitoring Dashboard</title>
+    <!-- Professional monitoring dashboard favicon -->
+    <link rel="icon" type="image/png" href="/static/icons8-layers-16.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 1rem;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-pill {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-pill:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .endpoint {
+            background: #f7fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 1rem;
+        }
+
+        .method.get { background: #48bb78; color: white; }
+        .method.post { background: #ed8936; color: white; }
+        .method.websocket { background: #9f7aea; color: white; }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .endpoint-desc {
+            margin-top: 0.5rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .response-example {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .quick-start {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .quick-start h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .step-number {
+            background: #fbbf24;
+            color: #1f2937;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .interactive-demo {
+            background: #f0f9ff;
+            border: 2px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .demo-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .demo-result {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 API Documentation</h1>
+            <p>Cloud Monitoring Dashboard - Complete API Reference</p>
+            <div class="nav-pills">
+                <a href="#quick-start" class="nav-pill">🚀 Quick Start</a>
+                <a href="#endpoints" class="nav-pill">📡 Endpoints</a>
+                <a href="#websocket" class="nav-pill">🔄 WebSocket</a>
+                <a href="#examples" class="nav-pill">💡 Examples</a>
+                <a href="/" class="nav-pill">🏠 Back to Home</a>
+            </div>
+        </div>
+
+        <div class="quick-start" id="quick-start">
+            <h2>🚀 Quick Start Guide</h2>
+            <p>Get started with the Cloud Monitoring API in 3 simple steps:</p>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Start the Backend:</strong> Run <code>python main.py</code> in the backend directory
+            </div>
+            
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Test Connection:</strong> Visit <code>http://localhost:8000/health</code> to check if everything works
+            </div>
+            
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Start Monitoring:</strong> Use the endpoints below to interact with the system
+            </div>
+        </div>
+
+        <div class="section" id="endpoints">
+            <h2>📡 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="endpoint-url">/health</span>
+                </div>
+                <div class="endpoint-desc">
+                    Check the overall system health including AI status and active connections.
+                </div>
+                <div class="interactive-demo">
+                    <button class="demo-button" onclick="testEndpoint('/health')">🧪 Test this endpoint</button>
+                    <div class="demo-result" id="result-health"></div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="endpoint-url">/api/metrics</span>
+                </div>
+                <div class="endpoint-desc">
+                    Get current system metrics (CPU, Memory, Latency, Error Rate) with timestamp.
+                </div>
+                <div class="interactive-demo">
+                    <button class="demo-button" onclick="testEndpoint('/api/metrics')">🧪 Test this endpoint</button>
+                    <div class="demo-result" id="result-metrics"></div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="endpoint-url">/api/incidents</span>
+                </div>
+                <div class="endpoint-desc">
+                    List all available incident types (CPU Spike, Memory Leak, API Failure, Network Latency).
+                </div>
+                <div class="interactive-demo">
+                    <button class="demo-button" onclick="testEndpoint('/api/incidents')">🧪 Test this endpoint</button>
+                    <div class="demo-result" id="result-incidents"></div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="endpoint-url">/api/incidents/trigger</span>
+                </div>
+                <div class="endpoint-desc">
+                    Trigger a single incident for testing. Send JSON with <code>incident_id</code>.
+                </div>
+                <div class="code-block">
+POST /api/incidents/trigger
+Content-Type: application/json
+
+{
+  "incident_id": "cpu_spike"
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="endpoint-url">/api/incidents/trigger-multiple</span>
+                </div>
+                <div class="endpoint-desc">
+                    Trigger multiple incidents simultaneously. Send JSON with array of <code>incident_ids</code>.
+                </div>
+                <div class="code-block">
+POST /api/incidents/trigger-multiple
+Content-Type: application/json
+
+{
+  "incident_ids": ["cpu_spike", "memory_leak", "api_failure"]
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="endpoint-url">/api/ai/analyze</span>
+                </div>
+                <div class="endpoint-desc">
+                    Request manual AI analysis of current system state. Requires Ollama + Mistral 7B.
+                </div>
+                <div class="interactive-demo">
+                    <button class="demo-button" onclick="testEndpoint('/api/ai/analyze')">🧪 Test AI Analysis</button>
+                    <div class="demo-result" id="result-ai"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="websocket">
+            <h2>🔄 WebSocket Connection</h2>
+            <div class="endpoint">
+                <div>
+                    <span class="method websocket">WS</span>
+                    <span class="endpoint-url">ws://localhost:8000/ws</span>
+                </div>
+                <div class="endpoint-desc">
+                    Real-time connection for live metrics updates and incident notifications.
+                </div>
+            </div>
+            
+            <h3>WebSocket Messages:</h3>
+            <div class="code-block">
+// Connect to WebSocket
+const ws = new WebSocket('ws://localhost:8000/ws');
+
+// Send ping to keep connection alive
+ws.send(JSON.stringify({
+  "type": "ping"
+}));
+
+// Receive real-time updates
+ws.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+  console.log('Received:', data);
+};
+            </div>
+        </div>
+
+        <div class="section" id="examples">
+            <h2>💡 Practical Examples</h2>
+            
+            <h3>Example 1: Basic Health Check</h3>
+            <div class="code-block">
+// JavaScript
+fetch('http://localhost:8000/health')
+  .then(response => response.json())
+  .then(data => {
+    console.log('System Status:', data.status);
+    console.log('AI Status:', data.ai_status);
+    console.log('Active Incidents:', data.active_incidents);
+  });
+            </div>
+            
+            <div class="response-example">
+                <strong>Response:</strong>
+                <div class="code-block">
+{
+  "status": "healthy",
+  "timestamp": "2025-01-11T10:30:00",
+  "simulator_running": true,
+  "active_incidents": 0,
+  "active_connections": 1,
+  "ai_status": "mandatory",
+  "ollama_status": "operational",
+  "model": "mistral:7b"
+}
+                </div>
+            </div>
+
+            <h3>Example 2: Trigger CPU Spike Incident</h3>
+            <div class="code-block">
+// JavaScript
+fetch('http://localhost:8000/api/incidents/trigger', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "incident_id": "cpu_spike"
+  })
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Incident triggered:', data);
+});
+            </div>
+
+            <h3>Example 3: Python Integration</h3>
+            <div class="code-block">
+import requests
+import json
+
+# Check system health
+response = requests.get('http://localhost:8000/health')
+health_data = response.json()
+print(f"System Status: {health_data['status']}")
+
+# Get current metrics
+metrics = requests.get('http://localhost:8000/api/metrics').json()
+print(f"CPU Usage: {metrics['cpu_usage']}%")
+print(f"Memory Usage: {metrics['memory_usage']}%")
+
+# Trigger incident
+incident_data = {"incident_id": "memory_leak"}
+response = requests.post(
+    'http://localhost:8000/api/incidents/trigger',
+    json=incident_data
+)
+print(f"Incident Response: {response.json()}")
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ System Architecture</h2>
+            <p>The API follows a clean 3-tier architecture:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                <li><strong>Frontend:</strong> HTML/CSS/JavaScript dashboard with real-time updates</li>
+                <li><strong>Backend:</strong> FastAPI server with WebSocket support and AI integration</li>
+                <li><strong>AI Layer:</strong> Ollama + Mistral 7B for intelligent incident analysis</li>
+            </ul>
+            
+            <h3>Key Features:</h3>
+            <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                <li>✅ Real-time metrics simulation</li>
+                <li>✅ WebSocket for live updates</li>
+                <li>✅ AI-powered incident analysis</li>
+                <li>✅ Multi-incident support</li>
+                <li>✅ RESTful API design</li>
+                <li>✅ Production-ready architecture</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>❓ Need Help?</h2>
+            <p>If you encounter any issues:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                <li>🔧 Make sure Python dependencies are installed: <code>pip install -r requirements.txt</code></li>
+                <li>🤖 For AI features, ensure Ollama is running: <code>ollama serve</code></li>
+                <li>📊 Check the dashboard at: <a href="/dashboard" style="color: #3b82f6;">http://localhost:8000/dashboard</a></li>
+                <li>🏠 Return to home: <a href="/" style="color: #3b82f6;">http://localhost:8000</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testEndpoint(endpoint) {
+            const resultId = 'result-' + endpoint.split('/').pop().replace('/', '');
+            const resultDiv = document.getElementById(resultId);
+            
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
