@@ -45,7 +45,7 @@ async def verify_ollama_required():
     try:
         logger.info("Verifying Ollama AI service availability...")
         
-        async with httpx.AsyncClient(timeout=10.0) as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
 #testing_ollama_connection
             ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
             response = await client.get(f"{ollama_url}/api/tags")
@@ -53,44 +53,44 @@ async def verify_ollama_required():
             if response.status_code != 200:
                 raise Exception(f"Ollama API returned status {response.status_code}")
             
-#checking_mistral_model
+#checking_llama_model
             tags_data = response.json()
             models = [model.get("name", "") for model in tags_data.get("models", [])]
             
-            mistral_available = any("mistral:7b" in model for model in models)
+            llama_available = any("llama3.2:1b" in model for model in models)
             
-            if not mistral_available:
-                raise Exception("Mistral 7B model not found in Ollama")
+            if not llama_available:
+                raise Exception("Llama 3.2 1B model not found in Ollama")
             
 #testing_model_response
             test_response = await client.post(
                 f"{ollama_url}/api/generate",
                 json={
-                    "model": "mistral:7b",
+                    "model": "llama3.2:1b",
                     "prompt": "System test: please respond with 'OK'",
                     "stream": False,
                     "options": {"num_ctx": 1024}
                 },
-                timeout=30.0
+                timeout=90.0
             )
             
             if test_response.status_code != 200:
-                raise Exception("Mistral model test failed")
+                raise Exception("Llama model test failed")
             
             logger.info("Ollama AI service verified successfully")
             return True
             
     except Exception as e:
         logger.error(f"CRITICAL ERROR: Ollama AI service unavailable - {e}")
-        logger.error("SYSTEM SHUTDOWN: Ollama is required for this dashboard")
+        logger.error("AI features disabled until Ollama is ready")
         logger.error("Required actions:")
         logger.error("   1. Install Ollama from https://ollama.ai")
-        logger.error("   2. Run: ollama pull mistral:7b")
+        logger.error("   2. Run: ollama pull llama3.2:1b")
         logger.error("   3. Start: ollama serve")
-        logger.error("   4. Restart this application")
+        logger.error("   4. AI will auto-connect when ready")
         
-#stopping_app_if_no_ai
-        sys.exit(1)
+#ai_not_ready_but_dashboard_works
+        raise Exception(f"Ollama not ready: {e}")
 
 #data_models
 
@@ -441,50 +441,30 @@ async def analyze_with_ollama_required(incident_types: List[str], metrics: dict,
     
     try:
         if multi_incident and len(incident_types) >= 2:
-            prompt = f"""Analyze this CRITICAL multi-incident situation:
-
-SIMULTANEOUS INCIDENTS: {', '.join(incident_types)}
-SYSTEM METRICS:
-- CPU: {metrics['cpu_usage']:.1f}%
-- Memory: {metrics['memory_usage']:.1f}%  
-- Latency: {metrics['api_latency']:.1f}ms
-- Errors: {metrics['error_rate']:.2f}%
-
-As a DevOps expert, provide a concise technical analysis:
-1. Probable root cause (max 2 sentences)
-2. Priority immediate actions (3 bullet points)
-3. Preventive measures (2 recommendations)
-
-Respond in English, be technical and actionable."""
+            prompt = f"""System has multiple incidents: {', '.join(incident_types)}. CPU: {metrics['cpu_usage']:.1f}%, Memory: {metrics['memory_usage']:.1f}%. Provide 3 quick fixes."""
+        elif incident_types:
+            prompt = f"""System incident: {incident_types[0]}. CPU: {metrics['cpu_usage']:.1f}%, Memory: {metrics['memory_usage']:.1f}%. Give 2 recommendations."""
         else:
-            prompt = f"""Analyze this incident: {incident_types[0] if incident_types else 'normal system'}
+            prompt = f"""System status: CPU {metrics['cpu_usage']:.1f}%, Memory {metrics['memory_usage']:.1f}%. Give 2 optimization tips."""
 
-CURRENT METRICS:
-- CPU: {metrics['cpu_usage']:.1f}%
-- Memory: {metrics['memory_usage']:.1f}%
-- Latency: {metrics['api_latency']:.1f}ms
-- Errors: {metrics['error_rate']:.2f}%
-
-Provide a quick technical analysis and 3 recommendations in English."""
-
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=120.0) as client:
             ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
             response = await client.post(
                 f"{ollama_url}/api/generate",
                 json={
-                    "model": "mistral:7b",
+                    "model": "llama3.2:1b",
                     "prompt": prompt,
                     "stream": False,
-                    "options": {"temperature": 0.3, "num_ctx": 2048}
+                    "options": {"temperature": 0.1, "num_ctx": 256}
                 }
             )
             
             if response.status_code == 200:
                 result = response.json()
                 return {
-                    "title": "🤖 Ollama Mistral AI Analysis",
+                    "title": "🤖 Ollama Llama AI Analysis",
                     "analysis": result.get("response", "").strip(),
-                    "model": "mistral:7b",
+                    "model": "llama3.2:1b",
                     "confidence": 0.90,
                     "status": "mandatory_active"
                 }
@@ -522,7 +502,12 @@ simulator = MetricsSimulator(connection_manager)
 # Directory configuration
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 SITE_EXPLICATIF_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "site_explicatif")
-TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "templates")
+
+# Templates directory - Docker compatible path
+if os.path.exists("/app/templates"):
+    TEMPLATES_DIR = "/app/templates"
+else:
+    TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "templates")
 
 # Templates configuration
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
@@ -531,12 +516,16 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 async def startup_event():
     logger.info("Starting Cloud Monitoring Dashboard with MANDATORY AI")
     
-    # MANDATORY OLLAMA VERIFICATION
-    await verify_ollama_required()
-    
-    # Start simulator after AI check
+    # Start simulator first (dashboard works without AI initially)
     simulator.start_simulation()
-    logger.info("Full system operational - AI active")
+    
+    # Try to verify Ollama but don't crash if not ready
+    try:
+        await verify_ollama_required()
+        logger.info("Full system operational - AI active")
+    except Exception as e:
+        logger.warning(f"AI not ready at startup: {e}")
+        logger.info("Dashboard operational - AI will connect when ready")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -602,7 +591,7 @@ async def health_check():
         "active_connections": len(connection_manager.active_connections),
         "ai_status": "mandatory",
         "ollama_status": ollama_status,
-        "model": "mistral:7b"
+        "model": "llama3.2:1b"
     }
 
 @app.get("/api/health")
@@ -624,7 +613,7 @@ async def api_health_check():
         "active_connections": len(connection_manager.active_connections),
         "ai_status": "mandatory",
         "ollama_status": ollama_status,
-        "model": "mistral:7b"
+        "model": "llama3.2:1b"
     }
 
 @app.get("/api/metrics")
@@ -740,7 +729,7 @@ if __name__ == "__main__":
 ║  📊 Dashboard: http://localhost:8000/dashboard                ║
 ║  📚 API Docs: http://localhost:8000/docs                      ║
 ║  📡 WebSocket: ws://localhost:8000/ws                         ║
-║  🤖 AI: MANDATORY Mistral 7B                                  ║
+║  🤖 AI: MANDATORY Llama 3.2 1B                                ║
 ╚═══════════════════════════════════════════════════════════════╝
     """)
     

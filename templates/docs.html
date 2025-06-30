@@ -572,7 +572,7 @@
                         
                         <div style="margin-bottom: 2rem;">
                             <div style="color: #ff6b00; font-size: 1.2rem; margin-bottom: 1rem;">🤖 AI ENGINE</div>
-                            <div style="color: rgba(255, 255, 255, 0.8);">Ollama + Mistral 7B Model</div>
+                            <div style="color: rgba(255, 255, 255, 0.8);">Ollama + Llama 3.2 1B Model</div>
                         </div>
                     </div>
                 </div>
@@ -749,13 +749,13 @@
                         <span class="method-badge method-get">GET</span>
                         <code class="endpoint-path">/api/ai/analyze</code>
                     </div>
-                    <p class="endpoint-desc">Request manual AI analysis using Ollama + Mistral 7B for intelligent system insights</p>
+                    <p class="endpoint-desc">Request manual AI analysis using Ollama + Llama 3.2 1B for intelligent system insights</p>
                     <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
                         <div style="color: #39ff14; margin-bottom: 1rem;">✅ Response (200 OK):</div>
                         <pre style="margin: 0; color: var(--neon-cyan);">{
   "analysis": "🔍 SYSTEM ANALYSIS COMPLETE\n\n✅ Current Status: STABLE with minor concerns\n\n📊 Metrics Analysis:\n• CPU Usage: 23.5% - Normal operational range\n• Memory Usage: 67.2% - Approaching high utilization\n• API Latency: 45.3ms - Excellent response times\n• Error Rate: 0.02% - Minimal errors detected\n\n⚠️ Recommendations:\n1. Monitor memory usage trends\n2. Consider memory optimization\n3. Maintain current CPU efficiency\n\n🎯 Overall Health Score: 85/100",
   "timestamp": "2025-01-01T12:00:00.000000",
-  "model": "mistral:7b",
+      "model": "llama3.2:1b",
   "analysis_duration": "2.3s"
 }</pre>
                     </div>
@@ -833,7 +833,7 @@ socket.onclose = function(event) {
   "data": {
     "analysis": "System analysis complete...",
     "timestamp": "2025-01-01T12:00:00.000000",
-    "model": "mistral:7b"
+    "model": "llama3.2:1b"
   }
 }</pre>
                     </div>
@@ -897,7 +897,7 @@ socket.send(JSON.stringify({
                     <div class="status-item">
                         <div class="status-label">🤖 AI Analysis</div>
                         <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
-                            Mandatory Ollama + Mistral 7B integration
+                            Mandatory Ollama + Llama 3.2 1B integration
                         </div>
                     </div>
                     <div class="status-item">

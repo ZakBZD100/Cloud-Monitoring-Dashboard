@@ -8,7 +8,7 @@
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)](https://docker.com)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Modern-green?logo=fastapi)](https://fastapi.tiangolo.com)
-[![AI Powered](https://img.shields.io/badge/AI-Mistral%207B-purple?logo=ai)](https://mistral.ai)
+[![AI Powered](https://img.shields.io/badge/AI-Llama%203.2%201B-purple?logo=ai)](https://llama.meta.com)
 [![WebSocket](https://img.shields.io/badge/WebSocket-Real%20Time-orange?logo=websocket)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 [![License](https://img.shields.io/badge/License-MIT-yellow?logo=opensource)](LICENSE)
 
@@ -27,7 +27,7 @@ A **production-ready cloud monitoring dashboard** featuring real-time metrics vi
 ### ✨ Key Features
 
 - 🔥 **Real-time Monitoring** - Live CPU, memory, API latency, and error rate tracking
-- 🤖 **AI Analysis** - Integrated Ollama + Mistral 7B for intelligent system insights
+- 🤖 **AI Analysis** - Integrated Ollama + Llama 3.2 1B for intelligent system insights
 - 🎨 **Modern UI** - Glassmorphism design with cyberpunk aesthetics
 - ⚡ **WebSocket Integration** - Instant updates without page refresh
 - 🚨 **Incident Simulation** - Multiple simultaneous incident types for testing
@@ -58,7 +58,7 @@ docker-compose up --build -d
 ```bash
 # Install Ollama AI
 curl -fsSL https://ollama.ai/install.sh | sh
-ollama pull mistral:7b
+ollama pull llama3.2:1b
 ollama serve
 
 # Setup Python environment
@@ -105,7 +105,7 @@ python main.py
 
 **AI Integration:**
 - Ollama runtime for local AI inference
-- Mistral 7B language model
+- Llama 3.2 1B language model
 - Automated incident analysis
 - Intelligent system recommendations
 
@@ -136,7 +136,7 @@ python main.py
 ### 🤖 AI Analysis Features
 - **Automatic Analysis** - Triggered during incidents
 - **Manual Analysis** - On-demand system evaluation
-- **Intelligent Insights** - Mistral 7B powered recommendations
+- **Intelligent Insights** - Llama 3.2 1B powered recommendations
 - **Performance Scoring** - Overall system health rating
 - **Trend Prediction** - Future issue identification
 
@@ -193,7 +193,7 @@ GET /api/health
   "status": "operational",
   "ollama_status": "operational", 
   "ai_status": "mandatory",
-  "model": "mistral:7b"
+  "model": "llama3.2:1b"
 }
 ```
 
@@ -228,7 +228,7 @@ GET /api/ai/analyze
 ```json
 {
   "analysis": "System analysis complete...",
-  "model": "mistral:7b",
+  "model": "llama3.2:1b",
   "confidence": 0.90
 }
 ```
@@ -369,7 +369,7 @@ docker-compose down -v && docker-compose up --build -d
 docker-compose exec ollama ollama list
 
 # Reinstall model
-docker-compose exec ollama ollama pull mistral:7b
+docker-compose exec ollama ollama pull llama3.2:1b
 
 # Restart AI service
 docker-compose restart ollama
@@ -410,7 +410,7 @@ MIT License - Free for personal and commercial use
 
 - **FastAPI** - Modern Python web framework
 - **Ollama** - Local AI inference platform  
-- **Mistral AI** - Advanced language model
+- **Meta Llama** - Advanced language model
 - **Chart.js** - Beautiful JavaScript charts
 - **Docker** - Containerization platform
 

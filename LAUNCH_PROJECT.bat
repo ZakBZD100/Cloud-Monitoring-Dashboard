@@ -68,7 +68,7 @@ curl -s http://localhost:11434 >nul 2>&1
 if %errorlevel% neq 0 (
     echo Note: Ollama AI not running
     echo To enable AI features: ollama serve
-    echo Then install model: ollama pull mistral:7b
+    echo Then install model: ollama pull llama3.2:1b
     echo.
     choice /c YN /m "Continue anyway (Y/N)? "
     if %errorlevel% equ 2 (

@@ -26,7 +26,7 @@ A simple explanation of how this monitoring dashboard works.
 - **Chart.js** - Library for drawing the graphs
 
 ### AI (Ollama)
-- **Mistral 7B** - The AI model that analyzes incidents
+- **Llama 3.2 1B** - The AI model that analyzes incidents
 - **Local processing** - Everything stays on your computer
 - **HTTP API** - Backend talks to Ollama via REST calls
 

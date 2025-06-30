@@ -27,7 +27,7 @@ echo "Checking Ollama AI service..."
 if ! command -v ollama &> /dev/null; then
     echo "Warning: Ollama not found in PATH"
     echo "Please install Ollama from https://ollama.ai"
-    echo "Then run: ollama pull mistral:7b"
+    echo "Then run: ollama pull llama3.2:1b"
     echo ""
 fi
 
@@ -41,11 +41,11 @@ if ! curl -s http://localhost:11434/api/tags > /dev/null 2>&1; then
     sleep 3
 fi
 
-#check if mistral model exists
-echo "Checking Mistral 7B model..."
-if ! ollama list | grep -q "mistral:7b"; then
-    echo "Downloading Mistral 7B model..."
-    ollama pull mistral:7b
+#check if llama model exists
+echo "Checking Llama 3.2 1B model..."
+if ! ollama list | grep -q "llama3.2:1b"; then
+    echo "Downloading Llama 3.2 1B model..."
+    ollama pull llama3.2:1b
 fi
 
 echo ""

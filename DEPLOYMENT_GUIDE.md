@@ -81,8 +81,8 @@ pip install -r cloud_monitoring_dashboard/backend/requirements.txt
 # Download and install Ollama
 # Visit: https://ollama.ai/download
 
-# Pull AI model (4GB download)
-ollama pull mistral:7b
+# Pull AI model (1.3GB download)
+ollama pull llama3.2:1b
 
 # Start Ollama service
 ollama serve
@@ -132,7 +132,7 @@ docker-compose down -v
 ┌─────────────────┐    ┌─────────────────┐
 │   Dashboard     │    │     Ollama      │
 │   (Port 8000)   │◄──►│   (Port 11434)  │
-│   FastAPI +     │    │   Mistral 7B    │
+│   FastAPI +     │    │   Llama 3.2 1B  │
 │   Frontend      │    │   AI Engine     │
 └─────────────────┘    └─────────────────┘
 ```
@@ -207,7 +207,7 @@ docker-compose logs ollama
 docker-compose restart ollama
 
 # Manually pull model
-docker-compose exec ollama ollama pull mistral:7b
+docker-compose exec ollama ollama pull llama3.2:1b
 ```
 
 #### 4. "WebSocket connection failed"

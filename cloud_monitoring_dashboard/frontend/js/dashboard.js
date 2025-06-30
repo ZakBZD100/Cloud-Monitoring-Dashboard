@@ -185,14 +185,20 @@ class CloudMonitoringDashboard {
             
             if (health.ai_status === 'mandatory' && health.ollama_status === 'operational') {
                 this.updateAIStatus('active');
-                this.addLog('SUCCESS', 'AI analysis service operational');
+                // Clear error display if AI is now working
+                if (this.aiStatus !== 'active') {
+                    this.clearAIAnalysis();
+                    this.addLog('SUCCESS', 'AI analysis service operational');
+                }
             } else {
                 this.updateAIStatus('error');
+                this.showAIError();
                 this.addLog('ERROR', 'AI analysis service unavailable');
             }
             
         } catch (error) {
             this.updateAIStatus('error');
+            this.showAIError();
             this.addLog('ERROR', 'Could not check AI status');
         }
     }
@@ -345,7 +351,7 @@ class CloudMonitoringDashboard {
             
             if (this.aiStatus === 'error') {
                 launchBtn.textContent = `🤖 MANDATORY AI REQUIRED`;
-                launchBtn.title = 'Ollama + Mistral 7B required for operation';
+                launchBtn.title = 'Ollama + Llama 3.2 1B required for operation';
             } else {
                 launchBtn.textContent = `🚀 LAUNCH SIMULTANEOUSLY (${this.selectedIncidents.size})`;
                 launchBtn.title = '';
@@ -753,19 +759,36 @@ class CloudMonitoringDashboard {
     clearAIAnalysis() {
         const aiContent = document.getElementById('aiContent');
         if (aiContent) {
-            aiContent.innerHTML = `
-                <div class="ai-placeholder">
-                    <div class="ai-icon">🧠</div>
-                    <div class="ai-text">
-                        Waiting for incidents to analyze...<br>
-                        <small>The AI will automatically analyze multi-simultaneous incidents</small>
-                        <br><small class="ai-required">🤖 MANDATORY Ollama + Mistral 7B REQUIRED</small>
+            if (this.aiStatus === 'active') {
+                aiContent.innerHTML = `
+                    <div class="ai-placeholder">
+                        <div class="ai-icon" style="color: #22c55e;">🤖</div>
+                        <div class="ai-text">
+                            <strong>AI Analysis Ready</strong><br>
+                            Ollama + Llama 3.2 1B operational<br>
+                            <small>Trigger incidents or click "Request Manual Analysis"</small>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            } else {
+                aiContent.innerHTML = `
+                    <div class="ai-placeholder">
+                        <div class="ai-icon">🧠</div>
+                        <div class="ai-text">
+                            Waiting for incidents to analyze...<br>
+                            <small>The AI will automatically analyze multi-simultaneous incidents</small>
+                            <br><small class="ai-required">🤖 MANDATORY Ollama + Llama 3.2 1B REQUIRED</small>
+                        </div>
+                    </div>
+                `;
+            }
         }
         
-        this.addLog('INFO', '🗑️ AI analysis cleared');
+        if (this.aiStatus === 'active') {
+            this.addLog('INFO', '🤖 AI analysis ready');
+        } else {
+            this.addLog('INFO', '🗑️ AI analysis cleared');
+        }
     }
 
     showAIError() {
@@ -776,10 +799,10 @@ class CloudMonitoringDashboard {
                     <div class="ai-icon" style="color: #ef4444;">🚨</div>
                     <div class="ai-text">
                         <strong>MANDATORY OLLAMA AI UNAVAILABLE</strong><br>
-                        The dashboard requires Ollama + Mistral 7B to function.<br><br>
+                        The dashboard requires Ollama + Llama 3.2 1B to function.<br><br>
                         <small>Solutions:</small><br>
                         <small>• Check if Ollama is started: <code>ollama serve</code></small><br>
-                        <small>• Install Mistral: <code>ollama pull mistral:7b</code></small><br>
+                        <small>• Install Llama: <code>ollama pull llama3.2:1b</code></small><br>
                         <small>• Restart the backend after fixing</small>
                     </div>
                 </div>

@@ -345,7 +345,7 @@ Content-Type: application/json
                     <span class="endpoint-url">/api/ai/analyze</span>
                 </div>
                 <div class="endpoint-desc">
-                    Request manual AI analysis of current system state. Requires Ollama + Mistral 7B.
+                    Request manual AI analysis of current system state. Requires Ollama + Llama 3.2 1B.
                 </div>
                 <div class="interactive-demo">
                     <button class="demo-button" onclick="testEndpoint('/api/ai/analyze')">🧪 Test AI Analysis</button>
@@ -410,7 +410,7 @@ fetch('http://localhost:8000/health')
   "active_connections": 1,
   "ai_status": "mandatory",
   "ollama_status": "operational",
-  "model": "mistral:7b"
+      "model": "llama3.2:1b"
 }
                 </div>
             </div>
@@ -464,7 +464,7 @@ print(f"Incident Response: {response.json()}")
             <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
                 <li><strong>Frontend:</strong> HTML/CSS/JavaScript dashboard with real-time updates</li>
                 <li><strong>Backend:</strong> FastAPI server with WebSocket support and AI integration</li>
-                <li><strong>AI Layer:</strong> Ollama + Mistral 7B for intelligent incident analysis</li>
+                <li><strong>AI Layer:</strong> Ollama + Llama 3.2 1B for intelligent incident analysis</li>
             </ul>
             
             <h3>Key Features:</h3>
