@@ -1,6 +1,7 @@
 # Large demo files (too big for GitHub)
 *.gif
 DISPLAY*.gif
+!DISPLAY-GIF.gif
 
 # Python cache
 __pycache__/
