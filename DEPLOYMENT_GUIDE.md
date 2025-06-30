@@ -276,68 +276,7 @@ cloud-monitoring-dashboard/
     └── 📖 docs.html               # API documentation
 ```
 
----
-
-## 🚀 GitHub Deployment
-
-### Step 1: Prepare Repository
-
-```bash
-# Initialize git (if not already done)
-git init
-
-# Add all files
-git add .
-
-# Commit changes
-git commit -m "feat: complete cloud monitoring dashboard with AI integration"
 ```
-
-### Step 2: Create GitHub Repository
-
-1. Go to https://github.com/new
-2. Repository name: `cloud-monitoring-dashboard`
-3. Description: `Real-time cloud monitoring dashboard with AI analysis`
-4. Public repository ✅
-5. Click "Create repository"
-
-### Step 3: Push to GitHub
-
-```bash
-# Add remote origin
-git remote add origin https://github.com/YOUR_USERNAME/cloud-monitoring-dashboard.git
-
-# Push to main branch
-git branch -M main
-git push -u origin main
-```
-
-### Step 4: GitHub Actions (Optional)
-
-Create `.github/workflows/docker.yml`:
-
-```yaml
-name: Docker Build and Test
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build Docker images
-      run: docker-compose build
-    - name: Run tests
-      run: docker-compose up -d && sleep 30 && curl -f http://localhost:8000/api/health
-```
-
----
-
 ## 🎯 Success Criteria
 
 Your deployment is successful when:
