@@ -33,7 +33,7 @@ A **production-ready cloud monitoring dashboard** featuring real-time metrics vi
 - 🚨 **Incident Simulation** - Multiple simultaneous incident types for testing
 - 📊 **Interactive Charts** - Chart.js powered visualizations
 - 🐳 **Docker Ready** - One-command deployment
-- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
+
 
 ---
 
@@ -143,7 +143,6 @@ python main.py
 ### 🎨 User Interface
 - **Glassmorphism Design** - Modern translucent aesthetics
 - **Cyberpunk Theme** - Neon colors and futuristic styling
-- **Responsive Layout** - Mobile-first design approach
 - **Interactive Charts** - Hover effects and animations
 - **Real-time Updates** - Smooth transitions and live data
 
