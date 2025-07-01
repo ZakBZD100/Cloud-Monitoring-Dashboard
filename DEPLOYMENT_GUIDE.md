@@ -62,16 +62,16 @@ docker-compose up --build -d
 ### Step 1: Environment Setup
 
 ```bash
-# Create virtual environment
+#create virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# Windows:
+#activate virtual environment
+#windows:
 venv\Scripts\activate
-# macOS/Linux:
+#macos/linux:
 source venv/bin/activate
 
-# Install dependencies
+#install dependencies
 pip install -r cloud_monitoring_dashboard/backend/requirements.txt
 ```
 

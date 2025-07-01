@@ -2,21 +2,21 @@
 
 ## Fast Setup
 ```bash
-# Start everything quickly
+#start everything quickly
 docker-compose up --build -d
 
-# Check if running
+#check if running
 curl http://localhost:8000/api/health
 ```
 
 ## Testing Incidents
 ```bash
-# Trigger CPU spike
+#trigger cpu spike
 curl -X POST http://localhost:8000/api/incidents/trigger \
   -H "Content-Type: application/json" \
   -d '{"incident_id": "cpu_spike"}'
 
-# Check metrics
+#check metrics
 curl http://localhost:8000/api/metrics
 ```
 

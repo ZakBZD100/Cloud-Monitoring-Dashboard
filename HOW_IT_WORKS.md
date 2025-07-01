@@ -48,16 +48,16 @@ A simple explanation of how this monitoring dashboard works.
 ```
 cloud_monitoring_dashboard/
 ├── backend/
-│   ├── main.py              # Main server, has all the logic
-│   └── requirements.txt     # Python packages needed
+│   ├── main.py              #main server, has all the logic
+│   └── requirements.txt     #python packages needed
 ├── frontend/
-│   ├── index.html          # The dashboard you see
+│   ├── index.html          #the dashboard you see
 │   ├── css/
-│   │   ├── style.css       # Basic styling
-│   │   ├── additional.css  # More styling
-│   │   └── enhanced_styles.css  # Fancy glassmorphism effects
+│   │   ├── style.css       #basic styling
+│   │   ├── additional.css  #more styling
+│   │   └── enhanced_styles.css  #fancy glassmorphism effects
 │   └── js/
-│       └── dashboard.js    # All the frontend logic
+│       └── dashboard.js    #all the frontend logic
 ```
 
 ## Key Technologies

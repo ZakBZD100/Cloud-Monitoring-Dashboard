@@ -42,31 +42,31 @@ A **production-ready cloud monitoring dashboard** featuring real-time metrics vi
 ### Method 1: Docker (Recommended)
 
 ```bash
-# Clone repository
+#clone repository
 git clone https://github.com/ZakBZD100/Cloud-Monitoring-Dashboard.git
 cd Cloud-Monitoring-Dashboard
 
-# Start everything with Docker
+#start everything with docker
 docker-compose up --build -d
 
-# Wait 2-3 minutes for AI model download
-# Open browser: http://localhost:8000
+#wait 2-3 minutes for ai model download
+#open browser: http://localhost:8000
 ```
 
 ### Method 2: Manual Setup
 
 ```bash
-# Install Ollama AI
+#install ollama ai
 curl -fsSL https://ollama.ai/install.sh | sh
 ollama pull llama3.2:1b
 ollama serve
 
-# Setup Python environment
+#setup python environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  #windows: venv\Scripts\activate
 pip install -r cloud_monitoring_dashboard/backend/requirements.txt
 
-# Start dashboard
+#start dashboard
 cd cloud_monitoring_dashboard/backend
 python main.py
 ```
@@ -157,24 +157,24 @@ docker-compose up --build -d
 
 ### Production Deployment
 ```bash
-# With custom environment
+#with custom environment
 OLLAMA_TIMEOUT=60 docker-compose up -d
 
-# Scale services
+#scale services
 docker-compose up --scale dashboard=3 -d
 
-# Monitor logs
+#monitor logs
 docker-compose logs -f dashboard
 ```
 
 ### Docker Architecture
 ```yaml
 services:
-  dashboard:    # FastAPI + Frontend
+  dashboard:    #fastapi + frontend
     ports: ["8000:8000"]
     depends_on: [ollama]
     
-  ollama:       # AI Service
+  ollama:       #ai service
     ports: ["11434:11434"]
     volumes: [ollama_data:/root/.ollama]
 ```
@@ -240,13 +240,13 @@ GET /api/ai/analyze
 
 ### Automated Tests
 ```bash
-# Health check
+#health check
 curl http://localhost:8000/api/health
 
-# Metrics endpoint
+#metrics endpoint
 curl http://localhost:8000/api/metrics
 
-# AI analysis
+#ai analysis
 curl http://localhost:8000/api/ai/analyze
 ```
 
@@ -263,11 +263,11 @@ curl http://localhost:8000/api/ai/analyze
 
 ### Environment Variables
 ```bash
-# Ollama Configuration
+#ollama configuration
 OLLAMA_URL=http://localhost:11434
 OLLAMA_TIMEOUT=30
 
-# Dashboard Settings
+#dashboard settings
 DEBUG=false
 LOG_LEVEL=INFO
 MAX_CONNECTIONS=1000
@@ -275,7 +275,7 @@ MAX_CONNECTIONS=1000
 
 ### Custom Incidents
 ```python
-# Add to IncidentConfig.INCIDENTS
+#add to incidentconfig.incidents
 "custom_incident": Incident(
     id="custom_incident",
     name="Custom Issue",
@@ -310,32 +310,32 @@ MAX_CONNECTIONS=1000
 ### Project Structure
 ```
 Cloud-Monitoring-Dashboard/
-├── 🐳 docker-compose.yml          # Docker orchestration
-├── 📚 DEPLOYMENT_GUIDE.md         # Deployment instructions
-├── 🚀 LAUNCH_PROJECT.bat          # Windows launcher
+├── 🐳 docker-compose.yml          #docker orchestration
+├── 📚 DEPLOYMENT_GUIDE.md         #deployment instructions
+├── 🚀 LAUNCH_PROJECT.bat          #windows launcher
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py             # FastAPI application
-│   │   └── 📦 requirements.txt    # Dependencies
+│   │   ├── 🐍 main.py             #fastapi application
+│   │   └── 📦 requirements.txt    #dependencies
 │   └── frontend/
-│       ├── 🎨 css/                # Stylesheets
-│       ├── ⚡ js/                 # JavaScript
-│       └── 🌐 index.html          # Dashboard UI
+│       ├── 🎨 css/                #stylesheets
+│       ├── ⚡ js/                 #javascript
+│       └── 🌐 index.html          #dashboard ui
 └── templates/
-    ├── 🏠 index.html              # Homepage
-    └── 📖 docs.html               # Documentation
+    ├── 🏠 index.html              #homepage
+└── 📖 docs.html               #documentation
 ```
 
 ### Local Development
 ```bash
-# Backend development
+#backend development
 cd cloud_monitoring_dashboard/backend
 pip install -r requirements.txt
 python main.py
 
-# Frontend development
-# Edit files in cloud_monitoring_dashboard/frontend/
-# Changes reflect immediately (no build step required)
+#frontend development
+#edit files in cloud_monitoring_dashboard/frontend/
+#changes reflect immediately (no build step required)
 ```
 
 ### Adding Features
@@ -352,43 +352,43 @@ python main.py
 
 **🐳 Docker Issues**
 ```bash
-# Container not starting
+#container not starting
 docker-compose logs dashboard
 
-# Port conflicts
+#port conflicts
 docker-compose down && docker-compose up -d
 
-# Clean restart
+#clean restart
 docker-compose down -v && docker-compose up --build -d
 ```
 
 **🤖 AI Service Issues**
 ```bash
-# Check Ollama status
+#check ollama status
 docker-compose exec ollama ollama list
 
-# Reinstall model
+#reinstall model
 docker-compose exec ollama ollama pull llama3.2:1b
 
-# Restart AI service
+#restart ai service
 docker-compose restart ollama
 ```
 
 **🌐 WebSocket Issues**
 ```bash
-# Check connection in browser console
-# Look for "WebSocket connected" message
+#check connection in browser console
+#look for "websocket connected" message
 
-# Verify backend is running
+#verify backend is running
 curl http://localhost:8000/api/health
 ```
 
 ### Debug Mode
 ```bash
-# Enable debug logging
+#enable debug logging
 DEBUG=true docker-compose up -d
 
-# View detailed logs
+#view detailed logs
 docker-compose logs -f --tail=100 dashboard
 ```
 
