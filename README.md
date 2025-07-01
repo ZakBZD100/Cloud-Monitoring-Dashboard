@@ -42,6 +42,19 @@ A **production-ready cloud monitoring dashboard** featuring real-time metrics vi
 
 ### Method 1: Docker (Recommended)
 
+**Quick Start (Auto-fix):**
+```bash
+#clone repository
+git clone https://github.com/ZakBZD100/Cloud-Monitoring-Dashboard.git
+cd Cloud-Monitoring-Dashboard
+
+#use smart startup script (auto-fixes port conflicts)
+./start.sh  # Linux/macOS
+# OR
+start.bat   # Windows
+```
+
+**Manual Start:**
 ```bash
 #clone repository
 git clone https://github.com/ZakBZD100/Cloud-Monitoring-Dashboard.git
@@ -350,6 +363,17 @@ python main.py
 ## 🔍 Troubleshooting
 
 ### Common Issues
+
+**🚀 Port Conflicts (Most Common)**
+```bash
+#automatic fix (recommended)
+./start.sh  # Linux/macOS
+start.bat   # Windows
+
+#manual fix
+docker-compose down -v
+docker-compose up --build -d
+```
 
 **🐳 Docker Issues**
 ```bash
