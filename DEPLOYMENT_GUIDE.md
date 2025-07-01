@@ -78,23 +78,23 @@ pip install -r cloud_monitoring_dashboard/backend/requirements.txt
 ### Step 2: Install Ollama AI
 
 ```bash
-# Download and install Ollama
-# Visit: https://ollama.ai/download
+#download and install ollama
+#visit: https://ollama.ai/download
 
-# Pull AI model (1.3GB download)
+#pull ai model (1.3gb download)
 ollama pull llama3.2:1b
 
-# Start Ollama service
+#start ollama service
 ollama serve
 ```
 
 ### Step 3: Launch Application
 
 ```bash
-# Navigate to backend
+#navigate to backend
 cd cloud_monitoring_dashboard/backend
 
-# Start the server
+#start the server
 python main.py
 ```
 
@@ -113,16 +113,16 @@ python main.py
 ### Docker Commands
 
 ```bash
-# Start everything
+#start everything
 docker-compose up --build -d
 
-# View logs
+#view logs
 docker-compose logs -f
 
-# Stop everything
+#stop everything
 docker-compose down
 
-# Remove everything (including data)
+#remove everything (including data)
 docker-compose down -v
 ```
 
@@ -183,48 +183,48 @@ curl -X POST http://localhost:8000/api/incidents/trigger \
 
 #### 1. "Docker not found"
 ```bash
-# Solution: Install Docker Desktop
-# Download from: https://docker.com/get-started
+#solution: install docker desktop
+#download from: https://docker.com/get-started
 ```
 
 #### 2. "Port 8000 already in use"
 ```bash
-# Solution: Kill existing process
-# Windows:
+#solution: kill existing process
+#windows:
 netstat -ano | findstr :8000
 taskkill /PID <PID> /F
 
-# macOS/Linux:
+#macos/linux:
 lsof -ti:8000 | xargs kill -9
 ```
 
 #### 3. "Ollama AI unavailable"
 ```bash
-# Check Ollama container
+#check ollama container
 docker-compose logs ollama
 
-# Restart Ollama
+#restart ollama
 docker-compose restart ollama
 
-# Manually pull model
+#manually pull model
 docker-compose exec ollama ollama pull llama3.2:1b
 ```
 
 #### 4. "WebSocket connection failed"
 ```bash
-# Check if dashboard is running
+#check if dashboard is running
 docker-compose ps
 
-# Restart dashboard
+#restart dashboard
 docker-compose restart dashboard
 ```
 
 #### 5. "AI analysis taking too long"
 ```bash
-# Check system resources
+#check system resources
 docker stats
 
-# Increase timeout (edit docker-compose.yml)
+#increase timeout (edit docker-compose.yml)
 environment:
   - OLLAMA_TIMEOUT=60
 ```
@@ -232,20 +232,20 @@ environment:
 ### Debug Commands
 
 ```bash
-# View all containers
+#view all containers
 docker ps -a
 
-# Check container logs
+#check container logs
 docker-compose logs [service-name]
 
-# Access container shell
+#access container shell
 docker-compose exec dashboard bash
 docker-compose exec ollama bash
 
-# Monitor resource usage
+#monitor resource usage
 docker stats
 
-# Clean up everything
+#clean up everything
 docker system prune -a
 ```
 
@@ -255,25 +255,25 @@ docker system prune -a
 
 ```
 cloud-monitoring-dashboard/
-├── 🐳 docker-compose.yml          # Docker orchestration
-├── 🐳 Dockerfile                  # Container definition
-├── 📚 DEPLOYMENT_GUIDE.md         # This guide
-├── 📄 README.md                   # Project overview
-├── 📄 LICENSE                     # MIT License
-├── 🚀 LAUNCH_PROJECT.bat          # Windows launcher
-├── 🚀 LAUNCH_PROJECT.sh           # Linux/macOS launcher
+├── 🐳 docker-compose.yml          #docker orchestration
+├── 🐳 Dockerfile                  #container definition
+├── 📚 DEPLOYMENT_GUIDE.md         #this guide
+├── 📄 README.md                   #project overview
+├── 📄 LICENSE                     #mit license
+├── 🚀 LAUNCH_PROJECT.bat          #windows launcher
+├── 🚀 LAUNCH_PROJECT.sh           #linux/macos launcher
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py             # FastAPI application
-│   │   └── 📦 requirements.txt    # Python dependencies
+│   │   ├── 🐍 main.py             #fastapi application
+│   │   └── 📦 requirements.txt    #python dependencies
 │   └── frontend/
-│       ├── 🎨 css/                # Stylesheets
-│       ├── ⚡ js/                 # JavaScript
-│       ├── 🖼️ icons8-layers-16.png # Favicon
-│       └── 🌐 index.html          # Dashboard UI
+│       ├── 🎨 css/                #stylesheets
+│       ├── ⚡ js/                 #javascript
+│       ├── 🖼️ icons8-layers-16.png #favicon
+│       └── 🌐 index.html          #dashboard ui
 └── templates/
-    ├── 🏠 index.html              # Homepage
-    └── 📖 docs.html               # API documentation
+    ├── 🏠 index.html              #homepage
+└── 📖 docs.html               #api documentation
 ```
 
 ```
