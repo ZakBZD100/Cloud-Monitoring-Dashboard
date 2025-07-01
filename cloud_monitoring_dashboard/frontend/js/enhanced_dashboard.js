@@ -181,7 +181,7 @@ class EnhancedCloudMonitoringDashboard {
         }
     }
 
-    // Enhanced AI Analysis
+            //enhanced ai analysis
     async requestAdvancedAnalysis() {
         if (window.dashboard) {
             return window.dashboard.requestManualAnalysis();
@@ -259,14 +259,14 @@ class EnhancedCloudMonitoringDashboard {
     }
 }
 
-// Initialize Enhanced Dashboard
+    //initialize enhanced dashboard
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof window !== 'undefined') {
         window.enhancedDashboard = new EnhancedCloudMonitoringDashboard();
     }
 });
 
-// Export for external use
+//export for external use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = EnhancedCloudMonitoringDashboard;
 } 

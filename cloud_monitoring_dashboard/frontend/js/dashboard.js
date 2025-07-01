@@ -23,7 +23,7 @@ class CloudMonitoringDashboard {
         this.metricsHistory = [];
         this.charts = {};
         this.logs = [];
-        this.aiStatus = 'checking'; // checking, active, error
+        this.aiStatus = 'checking'; //checking, active, error
         
         this.API_BASE = 'http://localhost:8000';
         this.WS_URL = 'ws://localhost:8000/ws';
@@ -56,21 +56,21 @@ class CloudMonitoringDashboard {
     }
 
     setupEventListeners() {
-        // Incident buttons
+        //incident buttons
         document.getElementById('btnSelectAll')?.addEventListener('click', () => this.selectAllIncidents());
         document.getElementById('btnSelectNone')?.addEventListener('click', () => this.selectNoIncidents());
         document.getElementById('btnLaunchSimultaneous')?.addEventListener('click', () => this.launchSimultaneousIncidents());
         
-        // AI buttons
+        //ai buttons
         document.getElementById('btnManualAnalysis')?.addEventListener('click', () => this.requestManualAnalysis());
         document.getElementById('btnClearAnalysis')?.addEventListener('click', () => this.clearAIAnalysis());
         
-        // Log buttons
+        //log buttons
         document.getElementById('btnClearLogs')?.addEventListener('click', () => this.clearLogs());
 
         document.getElementById('logsFilter')?.addEventListener('change', (e) => this.filterLogs(e.target.value));
         
-        // Chart controls
+        //chart controls
         document.querySelectorAll('.btn-chart-control').forEach(btn => {
             btn.addEventListener('click', (e) => this.changeChartPeriod(e.target.dataset.period));
         });
@@ -166,7 +166,7 @@ class CloudMonitoringDashboard {
                 this.handleAIInsight(message.insight);
                 break;
             case 'pong':
-                // Heartbeat response with AI status verification
+                //heartbeat response with ai status verification
                 if (message.ai_status === 'mandatory_active') {
                     this.updateAIStatus('active');
                 }
@@ -185,7 +185,7 @@ class CloudMonitoringDashboard {
             
             if (health.ai_status === 'mandatory' && health.ollama_status === 'operational') {
                 this.updateAIStatus('active');
-                // Clear error display if AI is now working
+                //clear error display if ai is now working
                 if (this.aiStatus !== 'active') {
                     this.clearAIAnalysis();
                     this.addLog('SUCCESS', 'AI analysis service operational');
@@ -228,7 +228,7 @@ class CloudMonitoringDashboard {
             }
         }
         
-        // Disable features if AI is unavailable
+                        //disable features if ai is unavailable
         const aiButtons = document.querySelectorAll('.btn-ai-analyze, .btn-launch-simultaneous');
         aiButtons.forEach(btn => {
             if (status === 'error') {
@@ -282,7 +282,7 @@ class CloudMonitoringDashboard {
             </div>
         `).join('');
 
-        // Event listeners for selection
+                    //event listeners for selection
         grid.querySelectorAll('.incident-card').forEach(card => {
             card.addEventListener('click', () => {
                 const incidentId = card.dataset.incidentId;
@@ -389,11 +389,11 @@ class CloudMonitoringDashboard {
                 this.addLog('AI', '🤖 Automatic AI analysis triggered for multi-incident');
             }
             
-            // Reset selection
+            //reset selection
             this.selectedIncidents.clear();
             this.updateIncidentCounter();
             
-            // Reload incident list
+            //reload incident list
             setTimeout(() => this.loadAvailableIncidents(), 1000);
             
         } catch (error) {
@@ -411,7 +411,7 @@ class CloudMonitoringDashboard {
             this.addLog('SUCCESS', `✅ RESOLVED: ${incident.name}`);
         }
         
-        // Reload incidents to update status
+                    //reload incidents to update status
         this.loadAvailableIncidents();
     }
 
@@ -425,7 +425,7 @@ class CloudMonitoringDashboard {
             const metrics = await response.json();
             this.handleMetricsUpdate(metrics);
             
-            // Check AI status in the response
+            //check ai status in the response
             if (metrics.ai_status === 'mandatory_active') {
                 this.updateAIStatus('active');
             }
@@ -441,7 +441,7 @@ class CloudMonitoringDashboard {
             timestamp: new Date()
         });
         
-        // Keep only the last 100 data points
+                    //keep only the last 100 data points
         if (this.metricsHistory.length > 100) {
             this.metricsHistory.shift();
         }
@@ -455,16 +455,16 @@ class CloudMonitoringDashboard {
     updateMetricsDisplay() {
         const metrics = this.currentMetrics;
         
-        // CPU
+                    //cpu
         this.updateMetricCard('cpu', metrics.cpu_usage, '%', this.getCPUStatus(metrics.cpu_usage));
         
-        // Memory
+                    //memory
         this.updateMetricCard('memory', metrics.memory_usage, '%', this.getMemoryStatus(metrics.memory_usage));
         
-        // Latency
+                    //latency
         this.updateMetricCard('latency', metrics.api_latency, 'ms', this.getLatencyStatus(metrics.api_latency));
         
-        // Errors
+                    //errors
         this.updateMetricCard('error', metrics.error_rate, '%', this.getErrorStatus(metrics.error_rate));
     }
 
@@ -665,7 +665,7 @@ class CloudMonitoringDashboard {
     updateCharts() {
         if (this.metricsHistory.length === 0) return;
 
-        const recent = this.metricsHistory.slice(-50); // last 50 points
+        const recent = this.metricsHistory.slice(-50); //last 50 points
         const labels = recent.map(m => new Date(m.timestamp).toLocaleTimeString('en-US', { 
             hour: '2-digit', minute: '2-digit', second: '2-digit' 
         }));
@@ -681,14 +681,14 @@ class CloudMonitoringDashboard {
     }
 
     changeChartPeriod(period) {
-        // Update active buttons
+        //update active buttons
         document.querySelectorAll('.btn-chart-control').forEach(btn => {
             btn.classList.remove('active');
         });
         
         document.querySelector(`[data-period="${period}"]`)?.classList.add('active');
         
-        // Logic to change chart period
+        //logic to change chart period
         let points = 50;
         switch (period) {
             case '5m': points = 25; break;
@@ -848,7 +848,7 @@ class CloudMonitoringDashboard {
         
         this.logs.push(logEntry);
         
-        // Keep only the last 200 logs
+        //keep only the last 200 logs
         if (this.logs.length > 200) {
             this.logs.shift();
         }
@@ -860,7 +860,7 @@ class CloudMonitoringDashboard {
         const container = document.getElementById('logsContainer');
         if (!container) return;
         
-        // Show all logs since there's no filter dropdown anymore
+        //show all logs since there's no filter dropdown anymore
         let filteredLogs = this.logs;
         
         const logsHtml = filteredLogs.slice(-50).map(log => `
@@ -918,7 +918,7 @@ class CloudMonitoringDashboard {
 
     handleConnectionMessage(message) {
         this.addLog('SUCCESS', message.message);
-        // Check if AI is mentioned in the connection message
+        //check if ai is mentioned in the connection message
         if (message.message.includes('AI') || message.message.includes('Ollama')) {
             this.updateAIStatus('active');
         }
@@ -934,7 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.dashboard = new CloudMonitoringDashboard();
 });
 
-// Export for external use
+//export for external use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = CloudMonitoringDashboard;
 } 

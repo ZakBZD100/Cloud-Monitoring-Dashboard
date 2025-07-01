@@ -222,7 +222,7 @@ class ConnectionManager:
             self.disconnect(connection)
 
 # ===============================================================================
-# METRICS SIMULATOR
+#metrics simulator
 # ===============================================================================
 
 class MetricsSimulator:
@@ -276,7 +276,7 @@ class MetricsSimulator:
                     "data": metrics.to_dict(),
                     "incident_count": len(self.active_incidents),
                     "system_status": self._get_system_status(),
-                    "ai_status": "active"  # AI always active
+                    "ai_status": "active"  #ai always active
                 })
                 
                 await self._manage_active_incidents()
@@ -287,13 +287,13 @@ class MetricsSimulator:
                 await asyncio.sleep(1)
     
     def _update_metrics(self):
-        # Reset to base + natural variation
+        #reset to base + natural variation
         for metric in self.current_metrics:
             base_value = self.base_metrics[metric]
             variation = random.uniform(-3, 3)
             self.current_metrics[metric] = max(0, base_value + variation)
         
-        # Impact of active incidents
+        #impact of active incidents
         for incident_id in self.active_incidents:
             incident = IncidentConfig.INCIDENTS[incident_id]
             for metric, (min_impact, max_impact) in incident.impact_metrics.items():
@@ -304,7 +304,7 @@ class MetricsSimulator:
                     else:
                         self.current_metrics[metric] += impact
         
-        # Limits
+        #limits
         self.current_metrics["cpu_usage"] = min(self.current_metrics["cpu_usage"], 98)
         self.current_metrics["memory_usage"] = min(self.current_metrics["memory_usage"], 95)
         self.current_metrics["api_latency"] = min(self.current_metrics["api_latency"], 2000)
@@ -367,7 +367,7 @@ class MetricsSimulator:
             except Exception as e:
                 results.append({"status": "error", "incident": incident_id, "error": str(e)})
         
-        # MANDATORY AI analysis if multiple incidents
+        #mandatory ai analysis if multiple incidents
         if success_count >= 2:
             await self._trigger_ai_analysis()
         
@@ -416,7 +416,7 @@ class MetricsSimulator:
             active_incidents = [IncidentConfig.INCIDENTS[iid].name 
                               for iid in self.active_incidents.keys()]
             
-            # MANDATORY AI - No fallback
+            #mandatory ai - no fallback
             analysis = await analyze_with_ollama_required(
                 incident_types=active_incidents,
                 metrics=self.current_metrics,
@@ -430,10 +430,10 @@ class MetricsSimulator:
             })
         except Exception as e:
             logger.error(f"MANDATORY AI analysis error: {e}")
-            # No fallback - the error is critical
+            #no fallback - the error is critical
 
 # ===============================================================================
-# MANDATORY OLLAMA AI
+#mandatory ollama ai
 # ===============================================================================
 
 async def analyze_with_ollama_required(incident_types: List[str], metrics: dict, multi_incident: bool = False) -> dict:
@@ -476,15 +476,15 @@ async def analyze_with_ollama_required(incident_types: List[str], metrics: dict,
         raise Exception(f"Ollama AI unavailable: {e}")
 
 # ===============================================================================
-# FASTAPI APPLICATION
+#fastapi application
 # ===============================================================================
 
 app = FastAPI(
     title="🚀 Cloud Monitoring Dashboard API",
     description="Cloud monitoring backend with AI - Zakariae El Bouzidi",
     version="2.1.0",
-    docs_url=None,  # Disable auto-generated docs
-    redoc_url=None  # Disable redoc
+    docs_url=None,  #disable auto-generated docs
+    redoc_url=None  #disable redoc
 )
 
 app.add_middleware(
@@ -495,31 +495,31 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# Global instances
+#global instances
 connection_manager = ConnectionManager()
 simulator = MetricsSimulator(connection_manager)
 
-# Directory configuration
+#directory configuration
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 SITE_EXPLICATIF_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "site_explicatif")
 
-# Templates directory - Docker compatible path
+#templates directory - docker compatible path
 if os.path.exists("/app/templates"):
     TEMPLATES_DIR = "/app/templates"
 else:
     TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "templates")
 
-# Templates configuration
+#templates configuration
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting Cloud Monitoring Dashboard with MANDATORY AI")
     
-    # Start simulator first (dashboard works without AI initially)
+    #start simulator first (dashboard works without ai initially)
     simulator.start_simulation()
     
-    # Try to verify Ollama but don't crash if not ready
+    #try to verify ollama but don't crash if not ready
     try:
         await verify_ollama_required()
         logger.info("Full system operational - AI active")
@@ -536,7 +536,7 @@ async def shutdown_event():
 async def root(request: Request):
     """Home page with glassmorphism design"""
     try:
-        # Check system status for dynamic display
+        #check system status for dynamic display
         async with httpx.AsyncClient(timeout=5.0) as client:
             ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
             response = await client.get(ollama_url)
@@ -574,7 +574,7 @@ async def api_documentation(request: Request):
 
 @app.get("/health")
 async def health_check():
-    # Mandatory AI test
+    #mandatory ai test
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
@@ -712,7 +712,7 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.error(f"WebSocket Error: {e}")
         connection_manager.disconnect(websocket)
 
-# Static file server for the dashboard (must be after all routes)
+#static file server for the dashboard (must be after all routes)
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 if __name__ == "__main__":

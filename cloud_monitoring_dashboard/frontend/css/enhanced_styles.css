@@ -8,7 +8,7 @@ and smooth animations for a modern monitoring interface.
 */
 
 :root {
-    /* Color Palette - Modern neon theme */
+    /*color palette - modern neon theme*/
     --neon-cyan: #00d4ff;
     --neon-purple: #b347d9;
     --neon-green: #39ff14;
@@ -16,19 +16,19 @@ and smooth animations for a modern monitoring interface.
     --electric-blue: #0066ff;
     --neon-orange: #ff6b00;
     
-    /* Glassmorphism effect variables */
+    /*glassmorphism effect variables*/
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-bg-strong: rgba(255, 255, 255, 0.1);
     --glass-bg-subtle: rgba(255, 255, 255, 0.02);
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-border-glow: rgba(0, 212, 255, 0.3);
     
-    /* Gradient definitions */
+    /*gradient definitions*/
     --gradient-primary: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
     --gradient-secondary: linear-gradient(135deg, var(--cyber-pink) 0%, var(--electric-blue) 100%);
     --gradient-matrix: linear-gradient(180deg, var(--neon-green) 0%, transparent 100%);
     
-    /* Animation presets */
+    /*animation presets*/
     --animation-glow: glow 2s ease-in-out infinite alternate;
     --animation-pulse: pulse-neon 1.5s ease-in-out infinite;
     --animation-float: float-3d 6s ease-in-out infinite;
@@ -41,7 +41,7 @@ and smooth animations for a modern monitoring interface.
     padding: 0;
 }
 
-/* Background with subtle animated gradients */
+/*background with subtle animated gradients*/
 body::before {
     content: '';
     position: fixed;
@@ -58,7 +58,7 @@ body::before {
     animation: hologram-shift 10s ease-in-out infinite;
 }
 
-/* Main dashboard header styling */
+/*main dashboard header styling*/
 .dashboard-header {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(20px);
@@ -90,7 +90,7 @@ body::before {
     text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
 }
 
-/* Connection status indicator */
+/*connection status indicator*/
 .connection-status {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -131,7 +131,7 @@ body::before {
     animation: var(--animation-pulse);
 }
 
-/* Glassmorphism card components */
+/*glassmorphism card components*/
 .glass-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -175,7 +175,7 @@ body::before {
     border-color: var(--glass-border-glow);
 }
 
-/* Metric display cards with animations */
+/*metric display cards with animations*/
 .metric-card {
     position: relative;
     animation: var(--animation-float);
@@ -227,7 +227,7 @@ body::before {
     text-shadow: 0 0 10px var(--neon-green);
 }
 
-/* Enhanced Progress Bars */
+/*enhanced progress bars*/
 .metric-progress {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -276,7 +276,7 @@ body::before {
     background: linear-gradient(90deg, var(--neon-orange), var(--neon-cyan));
 }
 
-/* Enhanced Incident Cards */
+/*enhanced incident cards*/
 .incident-card {
     background: var(--glass-bg-subtle);
     border: 1px solid var(--glass-border);
@@ -328,7 +328,7 @@ body::before {
     animation: var(--animation-pulse);
 }
 
-/* Enhanced Launch Button */
+/*enhanced launch button*/
 .btn-launch-simultaneous {
     background: var(--gradient-secondary);
     border: none;
@@ -370,7 +370,7 @@ body::before {
     transform: translateY(-1px);
 }
 
-/* Enhanced AI Container */
+/*enhanced ai container*/
 .ai-container {
     position: relative;
     background: var(--glass-bg);
@@ -406,7 +406,7 @@ body::before {
     animation: var(--animation-pulse);
 }
 
-/* Enhanced AI Analysis */
+/*enhanced ai analysis*/
 .ai-analysis {
     background: rgba(179, 71, 217, 0.05);
     border: 1px solid rgba(179, 71, 217, 0.2);
@@ -426,7 +426,7 @@ body::before {
     animation: ai-thinking 2s linear infinite;
 }
 
-/* Enhanced Charts */
+/*enhanced charts*/
 .chart-wrapper {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--glass-border-glow);
@@ -450,7 +450,7 @@ body::before {
     pointer-events: none;
 }
 
-/* Enhanced Logs */
+/*enhanced logs*/
 .logs-container {
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--glass-border-glow);
@@ -464,7 +464,7 @@ body::before {
     scrollbar-width: auto;
 }
 
-/* Enhanced scrollbar for logs */
+/*enhanced scrollbar for logs*/
 .logs-container::-webkit-scrollbar {
     width: 12px;
 }
@@ -524,7 +524,7 @@ body::before {
     background: rgba(179, 71, 217, 0.05);
 }
 
-/* Enhanced Select All / Deselect Buttons */
+/*enhanced select all / deselect buttons*/
 .btn-select-all,
 .btn-select-none {
     position: relative;
@@ -611,7 +611,7 @@ body::before {
     transition: transform 0.1s ease;
 }
 
-/* Incident Actions Container Enhancement */
+/*incident actions container enhancement*/
 .incident-actions {
     display: flex;
     gap: 15px;
@@ -639,7 +639,7 @@ body::before {
         transparent);
 }
 
-/* Animations */
+/*animations*/
 @keyframes glow {
     0% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
     100% { text-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.3); }
@@ -705,7 +705,7 @@ body::before {
     100% { background-position: 20px 20px; }
 }
 
-/* Responsive Design for Button Actions */
+/*responsive design for button actions*/
 @media (max-width: 768px) {
     .incident-actions {
         flex-direction: column;
@@ -737,14 +737,14 @@ body::before {
     }
 }
 
-/* Performance Optimizations */
+/*performance optimizations*/
 .gpu-accelerated {
     will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
 }
 
-/* Accessibility Enhancements */
+/*accessibility enhancements*/
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -755,7 +755,7 @@ body::before {
     }
 }
 
-/* Dark Mode Enhancements */
+/*dark mode enhancements*/
 @media (prefers-color-scheme: dark) {
     :root {
         --glass-bg-strong: rgba(255, 255, 255, 0.08);
@@ -763,7 +763,7 @@ body::before {
     }
 }
 
-/* High Contrast Mode */
+/*high contrast mode*/
 @media (prefers-contrast: high) {
     .glass-card {
         border-width: 2px;
