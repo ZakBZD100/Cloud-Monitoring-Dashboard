@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Dashboard Demo](DISPLAY-GIF.gif)
+![Dashboard Demo](./DISPLAY-GIF.gif)
 
 **Professional Real-time Cloud Infrastructure Monitoring System**
 
