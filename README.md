@@ -3,7 +3,8 @@
 <div align="center">
 
 ![Dashboard Demo](./DISPLAY-GIF.gif)
-<!-- GIF en cours de chargement via Git LFS (peut prendre 5-15 minutes) -->
+
+> **📸 Demo GIF**: En cours de chargement via Git LFS (peut prendre 5-15 minutes)
 
 **Professional Real-time Cloud Infrastructure Monitoring System**
 
