@@ -43,19 +43,7 @@ A **production-ready cloud monitoring dashboard** featuring real-time metrics vi
 
 ### Method 1: Docker (Recommended)
 
-**Quick Start (Auto-fix):**
-```bash
-#clone repository
-git clone https://github.com/ZakBZD100/Cloud-Monitoring-Dashboard.git
-cd Cloud-Monitoring-Dashboard
-
-#use smart startup script (auto-fixes port conflicts)
-./start.sh  # Linux/macOS
-# OR
-start.bat   # Windows
-```
-
-**Manual Start:**
+**Quick Start:**
 ```bash
 #clone repository
 git clone https://github.com/ZakBZD100/Cloud-Monitoring-Dashboard.git
@@ -66,6 +54,18 @@ docker-compose up --build -d
 
 #wait 2-3 minutes for ai model download
 #open browser: http://localhost:8000
+```
+
+**If you get port conflicts:**
+```bash
+#run the fix script (Linux/macOS)
+./fix_ports.sh
+
+#run the fix script (Windows)
+fix_ports.bat
+
+#then try again
+docker-compose up --build -d
 ```
 
 ### Method 2: Manual Setup
