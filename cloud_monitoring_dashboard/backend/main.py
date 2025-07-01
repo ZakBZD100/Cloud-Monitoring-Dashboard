@@ -523,19 +523,21 @@ async def download_llama_model():
             if response.status_code == 200:
                 models = response.json().get("models", [])
                 if any("llama3.2:1b" in model.get("name", "") for model in models):
-                    logger.info("Llama 3.2 1B model already present")
+                    logger.info("✅ Llama 3.2 1B model already present - AI ready")
                     return
             
             # Download model
-            logger.info("Downloading Llama 3.2 1B model...")
+            logger.info("🔄 DOWNLOADING: Llama 3.2 1B model (1.4GB) - This may take 2-5 minutes")
+            logger.info("📊 Dashboard works normally during download - AI will connect when ready")
             response = await client.post(f"{ollama_url}/api/pull", json={"name": "llama3.2:1b"})
             if response.status_code == 200:
-                logger.info("Llama 3.2 1B model downloaded successfully")
+                logger.info("✅ SUCCESS: Llama 3.2 1B model downloaded - AI now available")
             else:
-                logger.warning(f"Failed to download model: {response.status_code}")
+                logger.warning(f"❌ Failed to download model: {response.status_code}")
                 
     except Exception as e:
-        logger.warning(f"Could not download model: {e}")
+        logger.warning(f"⚠️ Could not download model: {e}")
+        logger.info("💡 AI features will be unavailable until model is downloaded")
 
 @app.on_event("startup")
 async def startup_event():
@@ -552,8 +554,9 @@ async def startup_event():
         await verify_ollama_required()
         logger.info("Full system operational - AI active")
     except Exception as e:
-        logger.warning(f"AI not ready at startup: {e}")
-        logger.info("Dashboard operational - AI will connect when ready")
+        logger.warning(f"🤖 AI not ready at startup: {e}")
+        logger.info("📊 Dashboard operational - AI will connect when model download completes")
+        logger.info("⏳ Expected wait time: 2-5 minutes for 1.4GB model download")
 
 @app.on_event("shutdown")
 async def shutdown_event():

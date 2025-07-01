@@ -52,7 +52,11 @@ cd Cloud-Monitoring-Dashboard
 #start everything with docker
 docker-compose up --build -d
 
-#wait 2-3 minutes for ai model download
+#⚠️ IMPORTANT: AI model download in progress
+#The Llama 3.2 1B model (1.4GB) downloads automatically
+#Dashboard works immediately, AI connects when download completes
+#Check logs: docker-compose logs dashboard
+
 #open browser: http://localhost:8000
 ```
 
@@ -87,6 +91,46 @@ python main.py
 ```
 
 **🎉 Access your dashboard at:** http://localhost:8000
+
+---
+
+## 🤖 AI Model Setup
+
+### Automatic Download Process
+
+When you run `docker-compose up --build -d`, the system automatically:
+
+1. **Starts Ollama AI service** on port 11434
+2. **Downloads Llama 3.2 1B model** (1.4GB) in the background
+3. **Dashboard works immediately** without AI features
+4. **AI connects automatically** when download completes
+
+### What to Expect
+
+**During Download (2-5 minutes):**
+- Dashboard is fully functional
+- Real-time metrics work normally
+- AI analysis shows "Model downloading..."
+- Check progress: `docker-compose logs dashboard`
+
+**After Download:**
+- AI analysis becomes available
+- Automatic incident analysis works
+- Manual AI analysis enabled
+
+### Troubleshooting AI Issues
+
+**If AI doesn't work after 10 minutes:**
+```bash
+#check download status
+docker-compose logs dashboard | grep "Downloading"
+
+#check ollama status
+docker-compose logs ollama
+
+#restart if needed
+docker-compose restart ollama
+```
 
 ---
 
