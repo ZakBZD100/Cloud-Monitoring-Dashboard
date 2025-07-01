@@ -2,7 +2,7 @@
 
 echo "🔧 Fixing port conflicts for Cloud Monitoring Dashboard..."
 
-# Check if Docker is running
+#check if Docker is running
 if ! docker info > /dev/null 2>&1; then
     echo "❌ Docker is not running. Please start Docker first."
     exit 1
@@ -10,29 +10,29 @@ fi
 
 echo "🧹 Cleaning up..."
 
-# Stop any existing containers
+#stop any existing containers
 echo "   Stopping existing containers..."
 docker-compose down -v > /dev/null 2>&1
 
-# Stop all containers that might use our ports
+#stop all containers that might use our ports
 echo "   Stopping all containers..."
 docker stop $(docker ps -q) 2>/dev/null || true
 
-# Stop local Ollama service if running
+#stop local Ollama service if running
 echo "   Stopping local Ollama service..."
 sudo systemctl stop ollama 2>/dev/null || true
 sudo pkill -f ollama 2>/dev/null || true
 
-# Kill any processes using our ports
+#kill any processes using our ports
 echo "   Killing processes using ports 8000 and 11434..."
 sudo lsof -ti:8000 | xargs kill -9 2>/dev/null || true
 sudo lsof -ti:11434 | xargs kill -9 2>/dev/null || true
 
-# Clean Docker system
+#clean Docker system
 echo "   Cleaning Docker cache..."
 docker system prune -f > /dev/null 2>&1
 
-# Wait a moment for ports to be released
+#wait a moment for ports to be released
 echo "   Waiting for ports to be released..."
 sleep 3
 

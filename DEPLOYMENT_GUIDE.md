@@ -254,26 +254,42 @@ docker system prune -a
 ## 📁 Project Structure
 
 ```
-cloud-monitoring-dashboard/
-├── 🐳 docker-compose.yml          #docker orchestration
-├── 🐳 Dockerfile                  #container definition
-├── 📚 DEPLOYMENT_GUIDE.md         #this guide
-├── 📄 README.md                   #project overview
-├── 📄 LICENSE                     #mit license
-├── 🚀 LAUNCH_PROJECT.bat          #windows launcher
-├── 🚀 LAUNCH_PROJECT.sh           #linux/macos launcher
+Cloud-Monitoring-Dashboard/
+├── 🐳 docker-compose.yml               #docker orchestration
+├── 🐳 Dockerfile                       #container definition
+├── 🤖 init_ollama.sh                   #ai model setup script
+├── 🔧 fix_ports.sh                     #port conflict resolver (linux/mac)
+├── 🔧 fix_ports.bat                    #port conflict resolver (windows)
+├── 🚀 LAUNCH_PROJECT.sh               #quick start script (linux/mac)
+├── 🚀 LAUNCH_PROJECT.bat              #quick start script (windows)
+├── 📚 DEPLOYMENT_GUIDE.md              #this deployment guide
+├── 📖 README.md                        #main documentation
+├── 🔍 HOW_IT_WORKS.md                  #technical details
+├── 💡 TIPS.md                          #usage tips
+├── ⚖️ LICENSE                          #mit license
+├── 🎬 DISPLAY-GIF.gif                  #demo animation
+├── 🚫 .gitignore                       #git ignore rules
+├── 📦 .gitattributes                   #git lfs config
+├── 🐳 .dockerignore                    #docker ignore rules
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py             #fastapi application
-│   │   └── 📦 requirements.txt    #python dependencies
+│   │   ├── 🐍 main.py                  #fastapi application core
+│   │   ├── 📦 requirements.txt         #python dependencies
+│   │   └── 📁 __pycache__/            #python cache files
 │   └── frontend/
-│       ├── 🎨 css/                #stylesheets
-│       ├── ⚡ js/                 #javascript
-│       ├── 🖼️ icons8-layers-16.png #favicon
-│       └── 🌐 index.html          #dashboard ui
+│       ├── 🌐 index.html               #main dashboard interface
+│       ├── 📄 docs.html                #api documentation page
+│       ├── 🖼️ icons8-layers-16.png     #dashboard favicon
+│       ├── 📁 css/
+│       │   ├── 🎨 style.css            #base dashboard styles
+│       │   ├── ✨ enhanced_styles.css   #advanced ui components
+│       │   └── 🎭 additional.css       #extra styling features
+│       └── 📁 js/
+│           ├── ⚡ dashboard.js          #main dashboard logic
+│           └── 🚀 enhanced_dashboard.js #advanced features
 └── templates/
-    ├── 🏠 index.html              #homepage
-└── 📖 docs.html               #api documentation
+    ├── 🏠 index.html                   #home page template
+    └── 📚 docs.html                    #documentation template
 ```
 
 ```

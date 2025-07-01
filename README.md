@@ -53,9 +53,9 @@ cd Cloud-Monitoring-Dashboard
 docker-compose up --build -d
 
 #⚠️ IMPORTANT: AI model download in progress
-#The Llama 3.2 1B model (1.4GB) downloads automatically
-#Dashboard works immediately, AI connects when download completes
-#Check logs: docker-compose logs dashboard
+#the Llama 3.2 1B model (1.4GB) downloads automatically
+#dashboard works immediately, AI connects when download completes
+#check logs: docker-compose logs dashboard
 
 #open browser: http://localhost:8000
 ```
@@ -146,33 +146,76 @@ docker-compose restart ollama
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
+
+```
+Cloud-Monitoring-Dashboard/
+├── 📁 cloud_monitoring_dashboard/
+│   ├── 📁 backend/
+│   │   ├── 🐍 main.py                    #fastAPI application core
+│   │   ├── 📋 requirements.txt           #python dependencies
+│   │   └── 📁 __pycache__/              #python cache
+│   └── 📁 frontend/
+│       ├── 🌐 index.html                #main dashboard interface
+│       ├── 📄 docs.html                 #API documentation page
+│       ├── 🖼️ icons8-layers-16.png      #dashboard favicon
+│       ├── 📁 css/
+│       │   ├── 🎨 style.css             #base dashboard styles
+│       │   ├── ✨ enhanced_styles.css    #advanced UI components
+│       │   └── 🎭 additional.css        #extra styling features
+│       └── 📁 js/
+│           ├── ⚡ dashboard.js           #main dashboard logic
+│           └── 🚀 enhanced_dashboard.js  #advanced features
+├── 📁 templates/
+│   ├── 🏠 index.html                    #home page template
+│   └── 📚 docs.html                     #documentation template
+├── 🐳 docker-compose.yml               #main deployment config
+├── 🐳 Dockerfile                       #container build instructions
+├── 🤖 init_ollama.sh                   #AI model setup script
+├── 🔧 fix_ports.sh                     #port conflict resolver (Linux/Mac)
+├── 🔧 fix_ports.bat                    #port conflict resolver (Windows)
+├── 🚀 LAUNCH_PROJECT.sh               #quick start script (Linux/Mac)
+├── 🚀 LAUNCH_PROJECT.bat              #quick start script (Windows)
+├── 📖 README.md                        #main documentation
+├── 📋 DEPLOYMENT_GUIDE.md              #deployment instructions
+├── 🔍 HOW_IT_WORKS.md                  #technical details
+├── 💡 TIPS.md                          #usage tips
+├── 🎬 DISPLAY-GIF.gif                  #demo animation
+├── ⚖️ LICENSE                          #MIT license
+├── 🚫 .gitignore                       #Git ignore rules
+├── 📦 .gitattributes                   #Git LFS config
+└── 🐳 .dockerignore                    #Docker ignore rules
+```
 
 ### 🛠️ Technology Stack
 
-**Frontend:**
-- HTML5, CSS3 (Glassmorphism), JavaScript ES6+
-- Chart.js for interactive visualizations
-- WebSocket for real-time communication
-- Responsive design with modern animations
+**Frontend Architecture:**
+- 🌐 **HTML5** - Semantic structure with modern standards
+- 🎨 **CSS3** - Glassmorphism design with cyberpunk aesthetics
+- ⚡ **JavaScript ES6+** - Modern async/await patterns
+- 📊 **Chart.js** - Interactive real-time visualizations
+- 🔗 **WebSocket** - Live bidirectional communication
+- 📱 **Responsive Design** - Mobile-first approach
 
-**Backend:**
-- FastAPI (Python) - High-performance API framework
-- WebSocket support for real-time updates
-- Jinja2 templating engine
-- Uvicorn ASGI server
+**Backend Architecture:**
+- 🐍 **FastAPI** - High-performance async Python framework
+- 🔌 **WebSocket** - Real-time event streaming
+- 🎭 **Jinja2** - Server-side template rendering
+- 🚀 **Uvicorn** - Lightning-fast ASGI server
+- 📊 **Data Simulation** - Realistic metrics generation
 
 **AI Integration:**
-- Ollama runtime for local AI inference
-- Llama 3.2 1B language model
-- Automated incident analysis
-- Intelligent system recommendations
+- 🤖 **Ollama** - Local AI runtime environment
+- 🧠 **Llama 3.2 1B** - Lightweight language model
+- 🔄 **Auto-download** - Seamless model deployment
+- 🎯 **Smart Analysis** - Context-aware incident insights
 
-**DevOps:**
-- Docker & Docker Compose
-- Multi-stage builds for optimization
-- Volume management for data persistence
-- Health checks and auto-restart policies
+**DevOps & Deployment:**
+- 🐳 **Docker** - Containerized deployment
+- 🎼 **Docker Compose** - Multi-service orchestration
+- 💾 **Volume Management** - Persistent data storage
+- 🏥 **Health Checks** - Service monitoring
+- 🔄 **Auto-restart** - High availability policies
 
 ---
 
@@ -369,20 +412,41 @@ MAX_CONNECTIONS=1000
 ### Project Structure
 ```
 Cloud-Monitoring-Dashboard/
-├── 🐳 docker-compose.yml          #docker orchestration
-├── 📚 DEPLOYMENT_GUIDE.md         #deployment instructions
-├── 🚀 LAUNCH_PROJECT.bat          #windows launcher
+├── 🐳 docker-compose.yml               #docker orchestration
+├── 🐳 Dockerfile                       #container build instructions
+├── 🤖 init_ollama.sh                   #ai model setup script
+├── 🔧 fix_ports.sh                     #port conflict resolver (linux/mac)
+├── 🔧 fix_ports.bat                    #port conflict resolver (windows)
+├── 🚀 LAUNCH_PROJECT.sh               #quick start script (linux/mac)
+├── 🚀 LAUNCH_PROJECT.bat              #quick start script (windows)
+├── 📖 README.md                        #main documentation
+├── 📚 DEPLOYMENT_GUIDE.md              #deployment instructions
+├── 🔍 HOW_IT_WORKS.md                  #technical details
+├── 💡 TIPS.md                          #usage tips
+├── 🎬 DISPLAY-GIF.gif                  #demo animation
+├── ⚖️ LICENSE                          #mit license
+├── 🚫 .gitignore                       #git ignore rules
+├── 📦 .gitattributes                   #git lfs config
+├── 🐳 .dockerignore                    #docker ignore rules
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py             #fastapi application
-│   │   └── 📦 requirements.txt    #dependencies
+│   │   ├── 🐍 main.py                  #fastapi application core
+│   │   ├── 📦 requirements.txt         #python dependencies
+│   │   └── 📁 __pycache__/            #python cache files
 │   └── frontend/
-│       ├── 🎨 css/                #stylesheets
-│       ├── ⚡ js/                 #javascript
-│       └── 🌐 index.html          #dashboard ui
+│       ├── 🌐 index.html               #main dashboard interface
+│       ├── 📄 docs.html                #api documentation page
+│       ├── 🖼️ icons8-layers-16.png     #dashboard favicon
+│       ├── 📁 css/
+│       │   ├── 🎨 style.css            #base dashboard styles
+│       │   ├── ✨ enhanced_styles.css   #advanced ui components
+│       │   └── 🎭 additional.css       #extra styling features
+│       └── 📁 js/
+│           ├── ⚡ dashboard.js          #main dashboard logic
+│           └── 🚀 enhanced_dashboard.js #advanced features
 └── templates/
-    ├── 🏠 index.html              #homepage
-└── 📖 docs.html               #documentation
+    ├── 🏠 index.html                   #home page template
+    └── 📚 docs.html                    #documentation template
 ```
 
 ### Local Development
@@ -412,8 +476,8 @@ python main.py
 **🚀 Port Conflicts (Most Common)**
 ```bash
 #automatic fix (recommended)
-./start.sh  # Linux/macOS
-start.bat   # Windows
+./fix_ports.sh  # Linux/macOS
+fix_ports.bat   # Windows
 
 #manual fix
 docker-compose down -v

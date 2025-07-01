@@ -46,18 +46,42 @@ A simple explanation of how this monitoring dashboard works.
 ## File structure explained
 
 ```
-cloud_monitoring_dashboard/
-├── backend/
-│   ├── main.py              #main server, has all the logic
-│   └── requirements.txt     #python packages needed
-├── frontend/
-│   ├── index.html          #the dashboard you see
-│   ├── css/
-│   │   ├── style.css       #basic styling
-│   │   ├── additional.css  #more styling
-│   │   └── enhanced_styles.css  #fancy glassmorphism effects
-│   └── js/
-│       └── dashboard.js    #all the frontend logic
+Cloud-Monitoring-Dashboard/
+├── cloud_monitoring_dashboard/
+│   ├── backend/
+│   │   ├── main.py                    #main server, has all the logic
+│   │   ├── requirements.txt           #python packages needed
+│   │   └── __pycache__/              #python cache files
+│   └── frontend/
+│       ├── index.html                #main dashboard interface
+│       ├── docs.html                 #api documentation page
+│       ├── icons8-layers-16.png      #dashboard favicon
+│       ├── css/
+│       │   ├── style.css             #base dashboard styles
+│       │   ├── enhanced_styles.css    #advanced ui components
+│       │   └── additional.css        #extra styling features
+│       └── js/
+│           ├── dashboard.js           #main dashboard logic
+│           └── enhanced_dashboard.js  #advanced features
+├── templates/
+│   ├── index.html                    #home page template
+│   └── docs.html                     #documentation template
+├── docker-compose.yml               #main deployment config
+├── Dockerfile                       #container build instructions
+├── init_ollama.sh                   #ai model setup script
+├── fix_ports.sh                     #port conflict resolver (linux/mac)
+├── fix_ports.bat                    #port conflict resolver (windows)
+├── LAUNCH_PROJECT.sh               #quick start script (linux/mac)
+├── LAUNCH_PROJECT.bat              #quick start script (windows)
+├── README.md                        #main documentation
+├── DEPLOYMENT_GUIDE.md              #deployment instructions
+├── HOW_IT_WORKS.md                  #technical details
+├── TIPS.md                          #usage tips
+├── DISPLAY-GIF.gif                  #demo animation
+├── LICENSE                          #mit license
+├── .gitignore                       #git ignore rules
+├── .gitattributes                   #git lfs config
+└── .dockerignore                    #docker ignore rules
 ```
 
 ## Key Technologies

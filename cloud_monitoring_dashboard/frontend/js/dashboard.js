@@ -242,7 +242,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // INCIDENT MANAGEMENT
+    //incident management
     // ===============================================================================
 
     async loadAvailableIncidents() {
@@ -416,7 +416,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // REAL-TIME METRICS
+    //real-time metrics
     // ===============================================================================
 
     async fetchCurrentMetrics() {
@@ -592,7 +592,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // GRAPHIQUES
+    //graphiques
     // ===============================================================================
 
     initializeCharts() {
@@ -700,7 +700,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // MANDATORY OLLAMA AI
+    //mandatory ollama ai
     // ===============================================================================
 
     async requestManualAnalysis() {
@@ -834,7 +834,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // SYSTEM LOGS
+    //system logs
     // ===============================================================================
 
     addLog(type, message) {
@@ -890,7 +890,7 @@ class CloudMonitoringDashboard {
     }
 
     // ===============================================================================
-    // UTILITIES
+    //utilities
     // ===============================================================================
 
     updateConnectionStatus(status) {
@@ -926,7 +926,7 @@ class CloudMonitoringDashboard {
 }
 
 // ===============================================================================
-// INITIALISATION GLOBALE
+//initialisation globale
 // ===============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
