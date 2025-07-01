@@ -512,12 +512,40 @@ else:
 #templates configuration
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
+async def download_llama_model():
+    """Download Llama 3.2 1B model if not present"""
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+            
+            # Check if model exists
+            response = await client.get(f"{ollama_url}/api/tags")
+            if response.status_code == 200:
+                models = response.json().get("models", [])
+                if any("llama3.2:1b" in model.get("name", "") for model in models):
+                    logger.info("Llama 3.2 1B model already present")
+                    return
+            
+            # Download model
+            logger.info("Downloading Llama 3.2 1B model...")
+            response = await client.post(f"{ollama_url}/api/pull", json={"name": "llama3.2:1b"})
+            if response.status_code == 200:
+                logger.info("Llama 3.2 1B model downloaded successfully")
+            else:
+                logger.warning(f"Failed to download model: {response.status_code}")
+                
+    except Exception as e:
+        logger.warning(f"Could not download model: {e}")
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting Cloud Monitoring Dashboard with MANDATORY AI")
     
     #start simulator first (dashboard works without ai initially)
     simulator.start_simulation()
+    
+    #download llama model in background
+    asyncio.create_task(download_llama_model())
     
     #try to verify ollama but don't crash if not ready
     try:
