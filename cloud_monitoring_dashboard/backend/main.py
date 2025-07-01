@@ -512,51 +512,94 @@ else:
 #templates configuration
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-async def download_llama_model():
-    """Download Llama 3.2 1B model if not present"""
+async def download_and_wait_for_ollama():
+    """Download model and wait for Ollama to be ready"""
+    logger.info("🚀 Starting Cloud Monitoring Dashboard Setup...")
+    logger.info("🔄 Initializing Ollama AI service...")
+    max_attempts = 120  #10 minutes with 5 second intervals
+    attempt = 0
+    
+    #wait for ollama to start
+    logger.info("⏳ Waiting for Ollama to start...")
+    while attempt < 60:  #wait up to 5 minutes for ollama to start
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+                response = await client.get(f"{ollama_url}")
+                if response.status_code == 200:
+                    logger.info("✅ Ollama service is running")
+                    break
+        except:
+            pass
+        attempt += 1
+        await asyncio.sleep(5)
+    
+    if attempt >= 60:
+        logger.error("❌ TIMEOUT: Ollama service not starting")
+        return False
+    
+    #now download the model
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
             
-            # Check if model exists
+            #check if model exists
             response = await client.get(f"{ollama_url}/api/tags")
             if response.status_code == 200:
                 models = response.json().get("models", [])
                 if any("llama3.2:1b" in model.get("name", "") for model in models):
-                    logger.info("✅ Llama 3.2 1B model already present - AI ready")
-                    return
+                    logger.info("✅ Llama 3.2 1B model already present")
+                    return True
             
-            # Download model
-            logger.info("🔄 DOWNLOADING: Llama 3.2 1B model (1.4GB) - This may take 2-5 minutes")
-            logger.info("📊 Dashboard works normally during download - AI will connect when ready")
+            logger.info("🔄 DOWNLOADING: Llama 3.2 1B model (1.4GB)")
+            logger.info("⏳ This may take 2-5 minutes - please wait...")
+            logger.info("📊 Progress will be shown below:")
+            
             response = await client.post(f"{ollama_url}/api/pull", json={"name": "llama3.2:1b"})
             if response.status_code == 200:
-                logger.info("✅ SUCCESS: Llama 3.2 1B model downloaded - AI now available")
+                logger.info("✅ Model download started successfully")
             else:
-                logger.warning(f"❌ Failed to download model: {response.status_code}")
-                
+                logger.warning(f"❌ Failed to start download: {response.status_code}")
+                return False
     except Exception as e:
-        logger.warning(f"⚠️ Could not download model: {e}")
-        logger.info("💡 AI features will be unavailable until model is downloaded")
+        logger.warning(f"⚠️ Could not start download: {e}")
+        return False
+    
+    #now wait for model to be ready
+    attempt = 0
+    while attempt < max_attempts:
+        try:
+            await verify_ollama_required()
+            logger.info("✅ SUCCESS: Llama 3.2 1B model downloaded successfully!")
+            logger.info("🤖 AI is now ready for use")
+            logger.info("🚀 Dashboard will start automatically...")
+            return True
+        except Exception as e:
+            attempt += 1
+            if attempt == 1:
+                logger.info("⏳ Waiting for model to finish downloading and loading...")
+            
+            if attempt % 12 == 0:  #every minute
+                logger.info(f"⏳ Still waiting for AI model... ({attempt//12} minutes elapsed)")
+            
+            await asyncio.sleep(5)  #wait 5 seconds before next check
+    
+    logger.error("❌ TIMEOUT: Ollama AI not ready after 10 minutes")
+    return False
 
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting Cloud Monitoring Dashboard with MANDATORY AI")
     
-    #start simulator first (dashboard works without ai initially)
+    #download and wait for ollama to be ready
+    if not await download_and_wait_for_ollama():
+        logger.error("❌ TIMEOUT: Ollama AI not ready after 10 minutes")
+        logger.error("💡 Please check your internet connection and try again")
+        raise Exception("Ollama AI not ready - dashboard cannot start")
+    
+    #start simulator only after ollama is ready
     simulator.start_simulation()
-    
-    #download llama model in background
-    asyncio.create_task(download_llama_model())
-    
-    #try to verify ollama but don't crash if not ready
-    try:
-        await verify_ollama_required()
-        logger.info("Full system operational - AI active")
-    except Exception as e:
-        logger.warning(f"🤖 AI not ready at startup: {e}")
-        logger.info("📊 Dashboard operational - AI will connect when model download completes")
-        logger.info("⏳ Expected wait time: 2-5 minutes for 1.4GB model download")
+    logger.info("🚀 Full system operational - AI active")
 
 @app.on_event("shutdown")
 async def shutdown_event():
