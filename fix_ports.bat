@@ -1,5 +1,5 @@
 @echo off
-echo 🔧 Fixing port conflicts for Cloud Monitoring Dashboard...
+echo Fixing port conflicts for Cloud Monitoring Dashboard...
 
 rem check if Docker is running
 docker info >nul 2>&1
@@ -30,7 +30,7 @@ docker system prune -f >nul 2>&1
 
 echo ✅ Port conflicts fixed!
 echo.
-echo 🚀 Now you can run:
+echo Now you can run:
 echo    docker-compose up --build -d
 echo.
 echo 💡 If you still have issues, try:

@@ -1,4 +1,4 @@
-# 🚀 Cloud Monitoring Dashboard with AI Integration
+# Cloud Monitoring Dashboard with AI Integration
 
 <div align="center">
 
@@ -16,30 +16,30 @@
 
 *Built by [Zakariae El Bouzidi](https://linkedin.com/in/zakariae-elbouzidi)*
 
-[🚀 Quick Start](#quick-start) • [📖 Documentation](#api-documentation) • [🐳 Docker Setup](#docker-deployment)
+[Quick Start](#quick-start) • [Documentation](#api-documentation) • [Docker Setup](#docker-deployment)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## Overview
 
 A **production-ready cloud monitoring dashboard** featuring real-time metrics visualization, intelligent incident simulation, and AI-powered analysis. Built for DevOps practitioners and system administrators who need professional monitoring capabilities.
 
-### ✨ Key Features
+### Key Features
 
-- 🔥 **Real-time Monitoring** - Live CPU, memory, API latency, and error rate tracking
-- 🤖 **AI Analysis** - Integrated Ollama + Llama 3.2 1B for intelligent system insights
-- 🎨 **Modern UI** - Glassmorphism design with cyberpunk aesthetics
-- ⚡ **WebSocket Integration** - Instant updates without page refresh
-- 🚨 **Incident Simulation** - Multiple simultaneous incident types for testing
-- 📊 **Interactive Charts** - Chart.js powered visualizations
-- 🐳 **Docker Ready** - One-command deployment
+- **Real-time Monitoring** - Live CPU, memory, API latency, and error rate tracking
+- **AI Analysis** - Integrated Ollama + Llama 3.2 1B for intelligent system insights
+- **Modern UI** - Glassmorphism design with cyberpunk aesthetics
+- **WebSocket Integration** - Instant updates without page refresh
+- **Incident Simulation** - Multiple simultaneous incident types for testing
+- **Interactive Charts** - Chart.js powered visualizations
+- **Docker Ready** - One-command deployment
 
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Method 1: Docker (Recommended)
 
@@ -94,7 +94,7 @@ python main.py
 
 ---
 
-## 🤖 AI Model Setup
+## AI Model Setup
 
 ### Automatic Download Process
 
@@ -134,7 +134,7 @@ docker-compose restart ollama
 
 ---
 
-## 📋 System Requirements
+## System Requirements
 
 | Component | Minimum | Recommended |
 |-----------|---------|-------------|
@@ -146,103 +146,103 @@ docker-compose restart ollama
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 Cloud-Monitoring-Dashboard/
-├── 📁 cloud_monitoring_dashboard/
-│   ├── 📁 backend/
-│   │   ├── 🐍 main.py                    #fastAPI application core
-│   │   ├── 📋 requirements.txt           #python dependencies
-│   │   └── 📁 __pycache__/              #python cache
-│   └── 📁 frontend/
-│       ├── 🌐 index.html                #main dashboard interface
-│       ├── 📄 docs.html                 #API documentation page
-│       ├── 🖼️ icons8-layers-16.png      #dashboard favicon
-│       ├── 📁 css/
-│       │   ├── 🎨 style.css             #base dashboard styles
-│       │   ├── ✨ enhanced_styles.css    #advanced UI components
-│       │   └── 🎭 additional.css        #extra styling features
-│       └── 📁 js/
-│           ├── ⚡ dashboard.js           #main dashboard logic
-│           └── 🚀 enhanced_dashboard.js  #advanced features
-├── 📁 templates/
-│   ├── 🏠 index.html                    #home page template
-│   └── 📚 docs.html                     #documentation template
-├── 🐳 docker-compose.yml               #main deployment config
-├── 🐳 Dockerfile                       #container build instructions
-├── 🤖 init_ollama.sh                   #AI model setup script
-├── 🔧 fix_ports.sh                     #port conflict resolver (Linux/Mac)
-├── 🔧 fix_ports.bat                    #port conflict resolver (Windows)
-├── 🚀 LAUNCH_PROJECT.sh               #quick start script (Linux/Mac)
-├── 🚀 LAUNCH_PROJECT.bat              #quick start script (Windows)
-├── 📖 README.md                        #main documentation
-├── 📋 DEPLOYMENT_GUIDE.md              #deployment instructions
-├── 🔍 HOW_IT_WORKS.md                  #technical details
-├── 💡 TIPS.md                          #usage tips
-├── 🎬 DISPLAY-GIF.gif                  #demo animation
-├── ⚖️ LICENSE                          #MIT license
-├── 🚫 .gitignore                       #Git ignore rules
-├── 📦 .gitattributes                   #Git LFS config
-└── 🐳 .dockerignore                    #Docker ignore rules
+├── cloud_monitoring_dashboard/
+│   ├── backend/
+│   │   ├── main.py                    #fastAPI application core
+│   │   ├── requirements.txt           #python dependencies
+│   │   └── __pycache__/              #python cache
+│   └── frontend/
+│       ├── index.html                #main dashboard interface
+│       ├── docs.html                 #API documentation page
+│       ├── icons8-layers-16.png      #dashboard favicon
+│       ├── css/
+│       │   ├── style.css             #base dashboard styles
+│       │   ├── enhanced_styles.css    #advanced UI components
+│       │   └── additional.css        #extra styling features
+│       └── js/
+│           ├── dashboard.js           #main dashboard logic
+│           └── enhanced_dashboard.js  #advanced features
+├── templates/
+│   ├── index.html                    #home page template
+│   └── docs.html                     #documentation template
+├── docker-compose.yml               #main deployment config
+├── Dockerfile                       #container build instructions
+├── init_ollama.sh                   #AI model setup script
+├── fix_ports.sh                     #port conflict resolver (Linux/Mac)
+├── fix_ports.bat                    #port conflict resolver (Windows)
+├── LAUNCH_PROJECT.sh               #quick start script (Linux/Mac)
+├── LAUNCH_PROJECT.bat              #quick start script (Windows)
+├── README.md                        #main documentation
+├── DEPLOYMENT_GUIDE.md              #deployment instructions
+├── HOW_IT_WORKS.md                  #technical details
+├── TIPS.md                          #usage tips
+├── DISPLAY-GIF.gif                  #demo animation
+├── LICENSE                          #MIT license
+├── .gitignore                       #Git ignore rules
+├── .gitattributes                   #Git LFS config
+└── .dockerignore                    #Docker ignore rules
 ```
 
-### 🛠️ Technology Stack
+### Technology Stack
 
 **Frontend Architecture:**
-- 🌐 **HTML5** - Semantic structure with modern standards
-- 🎨 **CSS3** - Glassmorphism design with cyberpunk aesthetics
-- ⚡ **JavaScript ES6+** - Modern async/await patterns
-- 📊 **Chart.js** - Interactive real-time visualizations
-- 🔗 **WebSocket** - Live bidirectional communication
-- 📱 **Responsive Design** - Mobile-first approach
+- **HTML5** - Semantic structure with modern standards
+- **CSS3** - Glassmorphism design with cyberpunk aesthetics
+- **JavaScript ES6+** - Modern async/await patterns
+- **Chart.js** - Interactive real-time visualizations
+- **WebSocket** - Live bidirectional communication
+- **Responsive Design** - Mobile-first approach
 
 **Backend Architecture:**
-- 🐍 **FastAPI** - High-performance async Python framework
-- 🔌 **WebSocket** - Real-time event streaming
-- 🎭 **Jinja2** - Server-side template rendering
-- 🚀 **Uvicorn** - Lightning-fast ASGI server
-- 📊 **Data Simulation** - Realistic metrics generation
+- **FastAPI** - High-performance async Python framework
+- **WebSocket** - Real-time event streaming
+- **Jinja2** - Server-side template rendering
+- **Uvicorn** - Lightning-fast ASGI server
+- **Data Simulation** - Realistic metrics generation
 
 **AI Integration:**
-- 🤖 **Ollama** - Local AI runtime environment
-- 🧠 **Llama 3.2 1B** - Lightweight language model
-- 🔄 **Auto-download** - Seamless model deployment
-- 🎯 **Smart Analysis** - Context-aware incident insights
+- **Ollama** - Local AI runtime environment
+- **Llama 3.2 1B** - Lightweight language model
+- **Auto-download** - Seamless model deployment
+- **Smart Analysis** - Context-aware incident insights
 
 **DevOps & Deployment:**
-- 🐳 **Docker** - Containerized deployment
-- 🎼 **Docker Compose** - Multi-service orchestration
-- 💾 **Volume Management** - Persistent data storage
-- 🏥 **Health Checks** - Service monitoring
-- 🔄 **Auto-restart** - High availability policies
+- **Docker** - Containerized deployment
+- **Docker Compose** - Multi-service orchestration
+- **Volume Management** - Persistent data storage
+- **Health Checks** - Service monitoring
+- **Auto-restart** - High availability policies
 
 ---
 
-## 📊 Features Deep Dive
+## Features Deep Dive
 
-### 🔥 Real-time Monitoring
+### Real-time Monitoring
 - **CPU Usage** - Live percentage with trend analysis
 - **Memory Usage** - RAM consumption tracking
 - **API Latency** - Response time monitoring
 - **Error Rate** - System failure detection
 - **WebSocket Status** - Connection health monitoring
 
-### 🚨 Incident Simulation
+### Incident Simulation
 - **CPU Spike** - Critical performance degradation
 - **Memory Leak** - Progressive resource exhaustion  
 - **API Failure** - Service unavailability simulation
 - **Network Latency** - Communication delays
 - **Multiple Incidents** - Simultaneous issue testing
 
-### 🤖 AI Analysis Features
+### AI Analysis Features
 - **Automatic Analysis** - Triggered during incidents
 - **Manual Analysis** - On-demand system evaluation
 - **Intelligent Insights** - Llama 3.2 1B powered recommendations
 - **Performance Scoring** - Overall system health rating
 - **Trend Prediction** - Future issue identification
 
-### 🎨 User Interface
+### User Interface
 - **Glassmorphism Design** - Modern translucent aesthetics
 - **Cyberpunk Theme** - Neon colors and futuristic styling
 - **Interactive Charts** - Hover effects and animations
@@ -250,7 +250,7 @@ Cloud-Monitoring-Dashboard/
 
 ---
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ### Simple Deployment
 ```bash
@@ -283,7 +283,7 @@ services:
 
 ---
 
-## 📖 API Documentation
+## API Documentation
 
 ### Health Check
 ```http
@@ -334,11 +334,11 @@ GET /api/ai/analyze
 }
 ```
 
-**📚 Complete API Reference:** http://localhost:8000/docs
+**Complete API Reference:** http://localhost:8000/docs
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Automated Tests
 ```bash
@@ -361,7 +361,7 @@ curl http://localhost:8000/api/ai/analyze
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 ```bash
@@ -390,7 +390,7 @@ MAX_CONNECTIONS=1000
 
 ---
 
-## 📈 Performance
+## Performance
 
 ### Benchmarks
 - **Response Time** - < 50ms average API response
@@ -407,46 +407,46 @@ MAX_CONNECTIONS=1000
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 ```
 Cloud-Monitoring-Dashboard/
-├── 🐳 docker-compose.yml               #docker orchestration
-├── 🐳 Dockerfile                       #container build instructions
-├── 🤖 init_ollama.sh                   #ai model setup script
-├── 🔧 fix_ports.sh                     #port conflict resolver (linux/mac)
-├── 🔧 fix_ports.bat                    #port conflict resolver (windows)
-├── 🚀 LAUNCH_PROJECT.sh               #quick start script (linux/mac)
-├── 🚀 LAUNCH_PROJECT.bat              #quick start script (windows)
-├── 📖 README.md                        #main documentation
-├── 📚 DEPLOYMENT_GUIDE.md              #deployment instructions
-├── 🔍 HOW_IT_WORKS.md                  #technical details
-├── 💡 TIPS.md                          #usage tips
-├── 🎬 DISPLAY-GIF.gif                  #demo animation
-├── ⚖️ LICENSE                          #mit license
-├── 🚫 .gitignore                       #git ignore rules
-├── 📦 .gitattributes                   #git lfs config
-├── 🐳 .dockerignore                    #docker ignore rules
+├── docker-compose.yml               #docker orchestration
+├── Dockerfile                       #container build instructions
+├── init_ollama.sh                   #ai model setup script
+├── fix_ports.sh                     #port conflict resolver (linux/mac)
+├── fix_ports.bat                    #port conflict resolver (windows)
+├── LAUNCH_PROJECT.sh               #quick start script (linux/mac)
+├── LAUNCH_PROJECT.bat              #quick start script (windows)
+├── README.md                        #main documentation
+├── DEPLOYMENT_GUIDE.md              #deployment instructions
+├── HOW_IT_WORKS.md                  #technical details
+├── TIPS.md                          #usage tips
+├── DISPLAY-GIF.gif                  #demo animation
+├── LICENSE                          #mit license
+├── .gitignore                       #git ignore rules
+├── .gitattributes                   #git lfs config
+├── .dockerignore                    #docker ignore rules
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py                  #fastapi application core
-│   │   ├── 📦 requirements.txt         #python dependencies
-│   │   └── 📁 __pycache__/            #python cache files
+│   │   ├── main.py                  #fastapi application core
+│   │   ├── requirements.txt         #python dependencies
+│   │   └── __pycache__/            #python cache files
 │   └── frontend/
-│       ├── 🌐 index.html               #main dashboard interface
-│       ├── 📄 docs.html                #api documentation page
-│       ├── 🖼️ icons8-layers-16.png     #dashboard favicon
-│       ├── 📁 css/
-│       │   ├── 🎨 style.css            #base dashboard styles
-│       │   ├── ✨ enhanced_styles.css   #advanced ui components
-│       │   └── 🎭 additional.css       #extra styling features
-│       └── 📁 js/
-│           ├── ⚡ dashboard.js          #main dashboard logic
-│           └── 🚀 enhanced_dashboard.js #advanced features
+│       ├── index.html               #main dashboard interface
+│       ├── docs.html                #api documentation page
+│       ├── icons8-layers-16.png     #dashboard favicon
+│       ├── css/
+│       │   ├── style.css            #base dashboard styles
+│       │   ├── enhanced_styles.css   #advanced ui components
+│       │   └── additional.css       #extra styling features
+│       └── js/
+│           ├── dashboard.js          #main dashboard logic
+│           └── enhanced_dashboard.js #advanced features
 └── templates/
-    ├── 🏠 index.html                   #home page template
-    └── 📚 docs.html                    #documentation template
+    ├── index.html                   #home page template
+    └── docs.html                    #documentation template
 ```
 
 ### Local Development
@@ -469,11 +469,11 @@ python main.py
 
 ---
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-**🚀 Port Conflicts (Most Common)**
+**Port Conflicts (Most Common)**
 ```bash
 #automatic fix (recommended)
 ./fix_ports.sh  # Linux/macOS
@@ -484,7 +484,7 @@ docker-compose down -v
 docker-compose up --build -d
 ```
 
-**🐳 Docker Issues**
+**Docker Issues**
 ```bash
 #container not starting
 docker-compose logs dashboard
@@ -496,7 +496,7 @@ docker-compose down && docker-compose up -d
 docker-compose down -v && docker-compose up --build -d
 ```
 
-**🤖 AI Service Issues**
+**AI Service Issues**
 ```bash
 #check ollama status
 docker-compose exec ollama ollama list
@@ -508,7 +508,7 @@ docker-compose exec ollama ollama pull llama3.2:1b
 docker-compose restart ollama
 ```
 
-**🌐 WebSocket Issues**
+**WebSocket Issues**
 ```bash
 #check connection in browser console
 #look for "websocket connected" message
@@ -528,7 +528,7 @@ docker-compose logs -f --tail=100 dashboard
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
@@ -539,7 +539,7 @@ MIT License - Free for personal and commercial use
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **FastAPI** - Modern Python web framework
 - **Ollama** - Local AI inference platform  
@@ -549,9 +549,9 @@ MIT License - Free for personal and commercial use
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
-### 👨‍💻 Author
+### Author
 **Zakariae El Bouzidi**
 - 🔗 LinkedIn: [zakariae-elbouzidi](https://linkedin.com/in/zakariae-elbouzidi)
 - 💻 GitHub: [ZakBZD100](https://github.com/ZakBZD100)

@@ -38,7 +38,7 @@ sleep 3
 
 echo "✅ Port conflicts fixed!"
 echo ""
-echo "🚀 Now you can run:"
+echo "Now you can run:"
 echo "   docker-compose up --build -d"
 echo ""
 echo "💡 If you still have issues, try:"

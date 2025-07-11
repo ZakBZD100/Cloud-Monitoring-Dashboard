@@ -1,30 +1,28 @@
 #!/bin/bash
 
-echo "🚀 Starting Cloud Monitoring Dashboard Setup..."
-echo "🔄 Initializing Ollama AI service..."
+echo "Starting Cloud Monitoring Dashboard Setup..."
+echo "=========================================="
+echo ""
 
-#start ollama in background
-ollama serve &
-OLLAMA_PID=$!
-
-echo "⏳ Waiting for Ollama to start..."
-sleep 10
-
-echo "🔄 DOWNLOADING: Llama 3.2 1B model (1.4GB)"
-echo "⏳ This may take 2-5 minutes - please wait..."
-echo "📊 Progress will be shown below:"
-
-#download the model and show progress
-ollama pull llama3.2:1b
-
-if [ $? -eq 0 ]; then
-    echo "✅ SUCCESS: Llama 3.2 1B model downloaded successfully!"
-    echo "🤖 AI is now ready for use"
-    echo "🚀 Dashboard will start automatically..."
-else
-    echo "❌ ERROR: Failed to download model"
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker is not installed. Please install Docker first."
     exit 1
 fi
 
-#keep ollama running
-wait $OLLAMA_PID 
+# Check if Docker Compose is installed
+if ! command -v docker-compose &> /dev/null; then
+    echo "Error: Docker Compose is not installed. Please install Docker Compose first."
+    exit 1
+fi
+
+echo "Progress will be shown below:"
+echo ""
+
+# Start the services
+docker-compose up --build -d
+
+echo "AI is now ready for use"
+echo "Dashboard will start automatically..."
+echo ""
+echo "Access your dashboard at: http://localhost:8000" 

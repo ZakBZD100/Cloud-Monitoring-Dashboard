@@ -1,4 +1,4 @@
-# 🚀 Complete Deployment Guide - Cloud Monitoring Dashboard
+# Complete Deployment Guide - Cloud Monitoring Dashboard
 
 **Author:** Zakariae El Bouzidi  
 **Project:** Real-time Cloud Monitoring Dashboard with AI Integration  
@@ -6,7 +6,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [Prerequisites](#prerequisites)
 2. [Quick Start (5 minutes)](#quick-start)
@@ -19,7 +19,7 @@
 
 ---
 
-## 🔧 Prerequisites
+## Prerequisites
 
 ### Required Software
 - **Docker Desktop** (Recommended - Easiest method)
@@ -35,7 +35,7 @@
 
 ---
 
-## ⚡ Quick Start (5 minutes)
+## Quick Start (5 minutes)
 
 ### Method 1: Docker (Recommended for Beginners)
 
@@ -53,11 +53,11 @@ docker-compose up --build -d
 # 5. Open browser: http://localhost:8000
 ```
 
-**That's it! 🎉 The dashboard is running!**
+**That's it! The dashboard is running!**
 
 ---
 
-## 🛠️ Manual Installation
+## Manual Installation
 
 ### Step 1: Environment Setup
 
@@ -102,7 +102,7 @@ python main.py
 
 ---
 
-## 🐳 Docker Deployment (Recommended)
+## Docker Deployment (Recommended)
 
 ### Why Docker?
 - ✅ **Zero configuration** - Everything works out of the box
@@ -139,7 +139,7 @@ docker-compose down -v
 
 ---
 
-## 🧪 Testing & Verification
+## Testing & Verification
 
 ### 1. Health Check
 ```bash
@@ -177,7 +177,7 @@ curl -X POST http://localhost:8000/api/incidents/trigger \
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -251,49 +251,48 @@ docker system prune -a
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Cloud-Monitoring-Dashboard/
-├── 🐳 docker-compose.yml               #docker orchestration
-├── 🐳 Dockerfile                       #container definition
-├── 🤖 init_ollama.sh                   #ai model setup script
-├── 🔧 fix_ports.sh                     #port conflict resolver (linux/mac)
-├── 🔧 fix_ports.bat                    #port conflict resolver (windows)
-├── 🚀 LAUNCH_PROJECT.sh               #quick start script (linux/mac)
-├── 🚀 LAUNCH_PROJECT.bat              #quick start script (windows)
-├── 📚 DEPLOYMENT_GUIDE.md              #this deployment guide
-├── 📖 README.md                        #main documentation
-├── 🔍 HOW_IT_WORKS.md                  #technical details
-├── 💡 TIPS.md                          #usage tips
-├── ⚖️ LICENSE                          #mit license
-├── 🎬 DISPLAY-GIF.gif                  #demo animation
-├── 🚫 .gitignore                       #git ignore rules
-├── 📦 .gitattributes                   #git lfs config
-├── 🐳 .dockerignore                    #docker ignore rules
+├── docker-compose.yml               #docker orchestration
+├── Dockerfile                       #container definition
+├── init_ollama.sh                   #ai model setup script
+├── fix_ports.sh                     #port conflict resolver (linux/mac)
+├── fix_ports.bat                    #port conflict resolver (windows)
+├── LAUNCH_PROJECT.sh               #quick start script (linux/mac)
+├── LAUNCH_PROJECT.bat              #quick start script (windows)
+├── DEPLOYMENT_GUIDE.md              #this deployment guide
+├── README.md                        #main documentation
+├── HOW_IT_WORKS.md                  #technical details
+├── TIPS.md                          #usage tips
+├── LICENSE                          #mit license
+├── DISPLAY-GIF.gif                  #demo animation
+├── .gitignore                       #git ignore rules
+├── .gitattributes                   #git lfs config
+├── .dockerignore                    #docker ignore rules
 ├── cloud_monitoring_dashboard/
 │   ├── backend/
-│   │   ├── 🐍 main.py                  #fastapi application core
-│   │   ├── 📦 requirements.txt         #python dependencies
-│   │   └── 📁 __pycache__/            #python cache files
+│   │   ├── main.py                  #fastapi application core
+│   │   ├── requirements.txt         #python dependencies
+│   │   └── __pycache__/            #python cache files
 │   └── frontend/
-│       ├── 🌐 index.html               #main dashboard interface
-│       ├── 📄 docs.html                #api documentation page
-│       ├── 🖼️ icons8-layers-16.png     #dashboard favicon
-│       ├── 📁 css/
-│       │   ├── 🎨 style.css            #base dashboard styles
-│       │   ├── ✨ enhanced_styles.css   #advanced ui components
-│       │   └── 🎭 additional.css       #extra styling features
-│       └── 📁 js/
-│           ├── ⚡ dashboard.js          #main dashboard logic
-│           └── 🚀 enhanced_dashboard.js #advanced features
+│       ├── index.html               #main dashboard interface
+│       ├── docs.html                #api documentation page
+│       ├── icons8-layers-16.png     #dashboard favicon
+│       ├── css/
+│       │   ├── style.css            #base dashboard styles
+│       │   ├── enhanced_styles.css   #advanced ui components
+│       │   └── additional.css       #extra styling features
+│       └── js/
+│           ├── dashboard.js          #main dashboard logic
+│           └── enhanced_dashboard.js #advanced features
 └── templates/
-    ├── 🏠 index.html                   #home page template
-    └── 📚 docs.html                    #documentation template
+    ├── index.html                   #home page template
+    └── docs.html                    #documentation template
 ```
 
-```
-## 🎯 Success Criteria
+## Success Criteria
 
 Your deployment is successful when:
 
@@ -307,7 +306,7 @@ Your deployment is successful when:
 
 ---
 
-## 📈 Next Steps
+## Next Steps
 
 ### For Learning
 1. **Explore the code** - Understand FastAPI, WebSocket, AI integration
@@ -323,7 +322,7 @@ Your deployment is successful when:
 
 ---
 
-## 🤝 Support
+## Support
 
 ### Getting Help
 - **GitHub Issues:** Report bugs or request features
@@ -338,7 +337,7 @@ Your deployment is successful when:
 
 ---
 
-**🎉 Congratulations! You've successfully deployed a professional-grade cloud monitoring system with AI integration!**
+**Congratulations! You've successfully deployed a professional-grade cloud monitoring system with AI integration!**
 
 ---
 
